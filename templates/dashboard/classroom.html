@@ -1,0 +1,120 @@
+﻿{% extends "dashboard/header.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block content %}
+
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+        <div class="page-header">
+        <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+        <h5 class="text-uppercase mb-0 mt-0 page-title">Blog</h5>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+        <ul class="breadcrumb float-right p-0 mb-0">
+        <li class="breadcrumb-item"><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="index.html">Blog</a></li>
+        <li class="breadcrumb-item"><span> Blog</span></li>
+        </ul>
+        </div>
+        </div>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="col">
+                {% for fullstack in fullstack  %}
+                  
+                
+                <h3 class="blog-title"><a href="">{{fullstack.courses}}</a></h3>CLASS: <b style="background-color: red;font-size:20px; color:white"> {{fullstack.online}} </b>
+                <div class="card-footer text-muted">
+                    <b>Date:</b> {{fullstack.date}}
+                  </div>
+              <div class="card">
+                <img src="{{fullstack.image.url}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h1 class="card-title"> <b style="color: green;">{{fullstack.title}}</b> </h1>
+                  <p class="card-text">{{fullstack.subject}}</p>
+                  {% if payments.courses == 'full-stack Engineering' %}
+                    
+                
+                  <a href="{{fullstack.link}}" class="btn btn-danger">Join class</a>
+
+               {% else %}
+              
+               <button class="btn btn-dark" disabled>restricted</button>
+              
+
+    
+                  {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+           
+  
+            <div class="col">
+
+                {% for front_end in front_end  %}
+                  
+               
+                <h3 class="blog-title"><a href="">{{front_end.courses}}</a></h3> <b style="background-color: red;font-size:20px; color:white">{{front_end.online}} </b>
+                <div class="card-footer text-muted">
+                   <b>Date:</b> {{front_end.date}}
+                  </div>
+              <div class="card">
+                <img src="{{front_end.image.url}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h1 class="card-title"> <b style="color: green;">{{front_end.title}}</b> </h1>
+                  <p class="card-text">{{front_end.subject}}</p>
+                  {% if payments.courses == 'front-end Engineering' %}
+                  <a href="{{front_end.link}}" class="btn btn-danger">Join class</a>
+
+                  
+                  {% else %}
+                  <button class="btn btn-dark" disabled>restricted</button>
+                  {{payment.courses}}
+                 
+   
+       
+                     {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+           
+            
+          </div>
+
+
+
+       
+        
+       
+
+        
+
+
+        </div>
+
+
+        </div>
+       
+
+
+
+
+
+        </div>
+        
+    
+    {% endblock content %}
+</body>
+</html>

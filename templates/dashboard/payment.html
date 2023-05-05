@@ -1,0 +1,119 @@
+{% extends "dashboard/header.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block content %}
+
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+          
+       
+        
+           {% if payment  %}
+           <h3 class="blog-title" style="color: green;"> successfully made payment</a></h3>
+           <p>dear <b>{{user.username}}</b> <b style="color: red;"> payment  has been acknowledge  pending verification from our team, click on the button below to generate your payment receipt</b>  </p>
+    
+          <div class="py-2">
+           <a class="btn btn-sm btn-primary" href="{% url 'slips'  %}">Generate Payment Slip</a>
+          </div>
+
+          {% else %}
+          
+
+          <h3 class="blog-title"><a href="#">Student payment for training materials</a></h3>
+        <p> Hello <b>{{user.username}}</b> buddy to proceed to the training you are required   <br> to register your courses to have access to our course materials
+          Kindly make payment to the following account inform 
+          </p>
+          <p style="color: red;">
+            <b>Account name:  Skyline ICT  Consult ltd</b>
+            <br>
+              <b> number: 6865199014</b>
+              <br>
+             <b> Bank:FCMB
+              </b>
+          </p>
+
+          <div class="row ">
+            <div class="col-lg-10">
+            <div class="card">
+            <div class="card-header">
+             {% include 'dashboard/mymessage.html' %}
+            </div>
+            <div class="card-body">
+            <form action="#" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+            <div class="form-group">
+            <label>Course Materials</label>
+            <select name="materials" id="" class="form-control">
+              <option value="front-end Engineering">front-end Engineering N12,500</option>
+              <option value="full-stack Engineering">full-stack Engineering(N22,500</option>
+              <option value="choose payment type" selected>choose courses</option>
+  
+  
+            </select>
+            </div>
+  
+            
+            <div class="form-group">
+            <label>Amount Paid</label>
+            <input type="number" name="amount_paid" class="form-control" placeholder="Enter paid Amount" required/>
+            </div>
+            <div class="form-group">
+            <label>Payment Date</label>
+            <input type="date" name="date" class="form-control" required/>
+            </div>
+            <div class="form-group">
+            <label>Email</label>
+            <input type="text" class="form-control" value="{{user.email}}" readonly="readonly">
+            </div>
+         
+            <div class="form-group">
+              <label>Payment Type</label>
+              <select name="payment_type" id="" class="form-control" required/>
+                
+                <option value="down payment(50%)">Down Payment(50%)</option>
+                <option value="full payment (100)%">full payment (100)%</option>
+                <option value="choose payment type" selected>choose payment type</option>
+                
+                
+              </select>
+              </div>
+    
+              
+              <div class="form-group">
+                <label>upload payment proof</label>
+                <input class="form-control" type="file" name="myfiles" id="" required/>
+                </div>
+  
+            <div class="text-right">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+  
+  
+  
+            </div>
+            </div>
+            </div>
+            </div>
+  
+          {% endif %}
+       
+
+
+
+
+        </div>
+        </div>
+        
+    
+    {% endblock content %}
+</body>
+</html>
