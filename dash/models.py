@@ -23,7 +23,7 @@ class Payment(models.Model):
     amount = models.CharField(max_length=200)
     courses = models.CharField(max_length=200) 
     payment_type = models.CharField(max_length=200)
-    date =      models.CharField(max_length=200)
+    date =      models.DateField(auto_now_add=True)
     uplaod     =   models.ImageField(upload_to='payment')
     user   =     models.ForeignKey(User, on_delete=models.CASCADE)
     passcode =    models.CharField(max_length=20)
@@ -33,8 +33,11 @@ class Payment(models.Model):
         return self.courses
     
     def mysave(self, *args, **kwargs):
+        mycode = "PASS-"
         if self.payment_status == 'approved' and not self.passcode:
-            self.passcode = "".join(random.choices(string.ascii_uppercase,k=10))
+            self.passcode = mycode + "".join(random.choices(string.digits,k=5))
+            
+            
         super().save(*args, **kwargs)
             
             

@@ -50,3 +50,16 @@ class Payment_approval(View):
         
     def post(self, request):
         return render(request, "dashboard/payment_approval.html")
+    
+    
+class view_payment(View):
+    def get(self,request, pk):
+        projects_datials = Payment.objects.get(pk=pk)
+     
+        return render(request, 'dashboard/view_payment.html', {'view_payment' :projects_datials,})
+    
+    
+    
+    def post(self, request, pk):
+        return render(request, 'dashboard/view_payment.html', {})
+    

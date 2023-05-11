@@ -33,30 +33,34 @@
             <div class="table-responsive">
             <table class="table custom-table datatable">
             <thead class="thead-light">
+             
             <tr>
             <th>Payment Name </th>
             <th>Payment Type</th>
             <th>Course</th>
             <th>Status</th>
             <th>Date</th>
+            <th>POP</th>
             <th class="text-right">Action</th>
+           
             </tr>
             </thead>
             {% for payment_materials in payment_materials  %}
             
-        
+      
             <tbody>
             <tr>
             <td>
-            <h2><a href="exam-detail.html" class="avatar text-white">C</a><a href="exam-detail.html">{{payment_materials.user.username}}</a></h2>
+            <h2><a href="" class="avatar text-white"> <img src="{{payment_materials.uplaod.url}}" alt=""></a><a href="exam-detail.html">{{payment_materials.user.username}}</a></h2>
             </td>
             <td>{{payment_materials.payment_type}}</td>
-            <td>{{payment_materials.courses}}</td>
+            <td>{{payment_materials.courses}}</td> 
             <td>{{payment_materials.payment_status}}</td>
-            <td>{{payment_materials.date | }}</td>
+            <td>{{payment_materials.date|date:'D-M-Y' }}</td>
+            <td><i><a href="{% url 'view_payment' payment_materials.pk %}"class="typcn typcn-eye btn btn-danger btn" style="font-size: 15;">view </a> </i></td>
             <td class="text-right">
-            <a href="edit-exam.html" class="btn btn-primary btn-sm mb-1">
-            <i class="far fa-edit">approved</i>
+            <a href="{% url 'myapproved' payment_materials.pk %}" class="btn btn-primary btn-sm">
+            <i class="far fa-edit">mark</i>
             </a>
              <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
             <i class="far fa-trash-alt"> reject</i>
