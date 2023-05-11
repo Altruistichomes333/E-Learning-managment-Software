@@ -30,6 +30,7 @@ class Profiles(models.Model):
     social_medialink = models.CharField(max_length=300)
     user =     models.ForeignKey(User, on_delete=models.CASCADE)
     status =   models.CharField(max_length=50, choices=adminsion_status, default='pending')
+    uplaod_picture =  models.ImageField(upload_to='profile', default=2)
    
     
     

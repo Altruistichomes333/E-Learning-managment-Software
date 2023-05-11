@@ -132,7 +132,7 @@ class Login(View):
         
         if not User.objects.filter(phone=phone).exists():
             messages.error(request, 'your phone number is invalid')
-            return  render(request, 'login.html')
+            return  render(request, 'registration/login.html')
         if password and phone:
             user = auth.authenticate(phone=phone, password=password)
             

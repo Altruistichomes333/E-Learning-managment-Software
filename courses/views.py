@@ -40,8 +40,13 @@ class Materialspayment(LoginRequiredMixin,View):
         if not amount_paid :
             messages.error(request, 'fill all the form before submitting')
             return render(request, "dashboard/payment.html")
+        
+    
+       
         mypayment = Payment.objects.create( user=request.user,amount=amount_paid,courses=materials, 
-                   payment_type=payment_type, date=date,uplaod=payment_file  )
+                   payment_type=payment_type, date=date,uplaod=payment_file)
+        mypayment.mysave()
+        
         mypayment.save()
         messages.success(request, 'payment for material submit successfully, refresh the page to generate payment reciept')
         return redirect('gen')

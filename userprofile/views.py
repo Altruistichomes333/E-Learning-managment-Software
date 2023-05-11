@@ -29,10 +29,11 @@ class Profile(LoginRequiredMixin,View):
         training_location = request.POST['training_location']
         occupation =    request.POST['occupation']
         social_media =   request.POST['social_media']
+        uplaod_picture   = request.FILES.get('file')
         link =    request.POST['link']
         Profiles.objects.create(first_name=first_name,last_name=last_name,state=state,
         city=city,local_govt=local_govt,phone_num=phone_number,contact_add=contact,
         courses=course,laptop=laptop,certifcate=certificate, occupation=occupation,location=training_location,
-        social_media=social_media,social_medialink=link,user=request.user )
+        social_media=social_media,social_medialink=link, uplaod_picture=uplaod_picture,user=request.user )
         messages.success(request, "profile created succesfully")
         return redirect('dash')

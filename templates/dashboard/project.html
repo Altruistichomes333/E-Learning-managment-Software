@@ -23,52 +23,60 @@
         </div>
     <div class="row">
       <div class="col-sm-6">
+{% for projects   in projects  %}
+
 
         <div class="card">
             <div class="card-header text-danger">
-            <h3>Current Projects for cohorts</h3>
+            <h3>Current Projects for {{persoancohorts.name}} </h3>
             </div>
             <div class="card-body">
                 <div class="card-title text-danger">
-                    <p> Peer learning day "C - More singly linked lists</p>
+                    <p>  {{projects.project_name}}</p>
                 </div>
 
               <blockquote class="blockquote mb-0">
-                <p>start: Wed 05/03 -- Deadline Wed 05/03.</p>
+                <p>start: {{projects.start_date}} -- Deadline: {{projects.ending_date}}</p>
              
-                <footer class="blockquote-footer ">Group Project for  <cite title="Source Title">Cohorts 3</cite></footer>
+                <footer class="blockquote-footer ">Group Project for  <cite title="Source Title">{{persoancohorts.name}}</cite></footer>
                  </blockquote>
                  <div class="btn">
-                    <a href="#" class="btn-sm btn-danger">Start Now</a>
+                    <a href="{% url 'project_datials' projects.pk %}" class="btn-sm btn-danger">Start Now</a>
                  </div>
                 
             </div>
           </div>
+          {% endfor %}
+
+
       </div>
 
 
       <div class="col-sm-6">
+{% for expired_projects in expired_projects %}
+
 
         <div class="card">
-            <div class="card-header text-danger">
-            <h3>Current Projects for cohorts</h3>
+            <div class="card-header text-info">
+            <h3> Previous  Projects for {{persoancohorts.name}}</h3>
             </div>
+           
             <div class="card-body">
                 <div class="card-title text-danger">
-                    <p> Peer learning day "C - More singly linked lists</p>
+                    <p> <a href="{% url 'project_datials' expired_projects.pk %}"> {{expired_projects.project_name}}</a></p>
                 </div>
 
               <blockquote class="blockquote mb-0">
-                <p>start: Wed 05/03 -- Deadline Wed 05/03.</p>
+                <p>project Score -- 20%</p>
              
-                <footer class="blockquote-footer ">Group Project for  <cite title="Source Title">Cohorts 3</cite></footer>
+                <footer class="blockquote-footer ">Group Project for   <cite title="Source Title">{{persoancohorts.name}}</cite></footer>
                  </blockquote>
-                 <div class="btn">
-                    <a href="#" class="btn-sm btn-danger">Start Now</a>
-                 </div>
+                
                 
             </div>
           </div>
+          {% endfor %}
+
       </div>
 
      

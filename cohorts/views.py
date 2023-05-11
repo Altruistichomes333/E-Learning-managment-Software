@@ -33,7 +33,8 @@ class Groupscohort(View):
     
     
     
-class AllCohorts(View):
+class AllCohorts(LoginRequiredMixin,View):
+    login_url = 'login'
     def get(self,request):
         allcohorts = Cohorts.objects.all()
         return render(request, 'dashboard/groups_cohorts.html',{'allcohorts': allcohorts})
@@ -48,7 +49,7 @@ class Classroom(LoginRequiredMixin,View):
              payments= Payment.objects.get(user=request.user)
         except: payments =  None
         
-        fullstack = Livesesion.objects.filter(courses__name='Full Stack Engineering')
+        fullstack = Livesesion.objects.filter(courses__name='Full-Stack Engineering')
         front_end = Livesesion.objects.filter(courses__name='Front-end Engineering')
         return render(request, 'dashboard/classroom.html',{'payments':payments, 'fullstack':fullstack, 'front_end':front_end})
        

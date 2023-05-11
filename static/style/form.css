@@ -123,7 +123,7 @@ and (max-width:1024px) {
 @media (max-width: 900px){
 
     .container-fluid{
-        height: 250vh ;
+        height: 350vh ;
 
       
     }
