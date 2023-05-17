@@ -6,7 +6,7 @@ from .myusermanager import Usermanager
 
 
 class MyUser (AbstractBaseUser):
-    phone = models.IntegerField(unique=True)
+    phone = models.CharField(unique=True, max_length=100)
     email  = models.CharField(max_length=30)
     username = models.CharField(max_length=200)
     first_name = models.CharField(max_length=40)

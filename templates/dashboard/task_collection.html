@@ -1,0 +1,86 @@
+{% extends "dashboard/header.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block content %}
+
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+          
+       
+          
+
+          <h3 class="text-danger"><a href="#">Task collections Page</a></h3>
+         
+        <p class="text-danger">share a screenshot of your task</p>
+        <p class="text-danger">copy and paste your social media profile link below </p>
+        <p class="text-danger">after submission wait for approval from our team </p>
+         
+        <!-- {% include 'dashboard/mymessage.html' %} -->
+          <div class="row ">
+            <div class="col-lg-10">
+            <div class="card">
+            <div class="card-header">
+             {% include 'dashboard/mymessage.html' %}
+            </div>
+            <div class="card-body">
+            <form action="#" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+            <div class="form-group">
+            <label>Task</label>
+           
+              
+          
+            <select name="project" id="" class="form-control">
+                {% for myassigment in task  %}
+              <option value="{{myassigment.task}}" required>{{myassigment.task}}</option>
+              
+              {% endfor %}
+            </select>
+          
+            </div>
+  
+            
+            <div class="form-group">
+            <label>social media link</label>
+            <input type="url" name="url" class="form-control" placeholder="enter your social media profile link" required/>
+            </div>
+          
+            <div class="form-group">
+                <label>screen shot</label>
+                <input class="form-control" type="file" name="myfiles" id="" required/>
+                </div>
+
+         
+  
+            <div class="text-right">
+            <button type="submit" class="btn btn-primary">Submit Assigment</button>
+            </div>
+            </form>
+  
+  
+  
+            </div>
+            </div>
+            </div>
+            </div>
+  
+       
+
+
+
+
+        </div>
+        </div>
+        
+    
+    {% endblock content %}
+</body>
+</html>

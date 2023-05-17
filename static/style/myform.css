@@ -34,7 +34,7 @@ input[type=text] {
 
 
 
-input[type=Number] {
+input[type=tel] {
 
     padding: 10px 20px ;
  
@@ -71,7 +71,7 @@ padding-left: 40px;
 
 
 
-input[type=Number]:focus{
+input[type=tel]:focus{
 
     padding-left: 40px;
      

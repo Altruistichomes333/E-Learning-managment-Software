@@ -7,6 +7,8 @@ from .models import Cohorts
 from .models  import Mypasscode
 from django.contrib import messages
 from .models import Payment
+from projects .models import Assigment, Project, Score
+from projects .models import  Task_collections
 
 # studentcode = None
 # cohorts = None
@@ -17,12 +19,17 @@ class Dashboard(LoginRequiredMixin, View):
     login_url ='login'
     
     def get(self, request):
+        myscore = Score.score_caculations(request.user)
         
         adimitted_student = Profiles.objects.filter(status='admitted')
         try:
             profile = Profiles.objects.get(user=request.user).first_name
         except ObjectDoesNotExist:
             return  redirect('profile')
+        try:
+            task_collection =  Task_collections.objects.get(student=request.user)
+        except ObjectDoesNotExist:
+            return redirect('task_collwction')
         
         try:
             cohorts = Cohorts.objects.get(users=request.user).name
@@ -37,10 +44,37 @@ class Dashboard(LoginRequiredMixin, View):
         
         
         try:
+          assigment = Assigment.objects.get(user=request.user)
+        except: assigment = None
+        
+        
+        try:
+          project = Project.objects.get(user=request.user)
+        except: project = None
+        
+        
+        try:
            studentcode = Mypasscode.objects.get(student=request.user).passcodeNo
         except: studentcode = None
+        
+        try:
+           admitted = Profiles.objects.filter(status='admitted')
+        except: admitted = None
+        
+        
+        context = {
+            'project':project,
+            'cohorts':cohorts, 
+            'profile':myprofile, 
+            'passcode':studentcode,
+            'myid':myid,
+            'adimitted_student':adimitted_student, 
+            'assigment':assigment,
+            'myscore': myscore,
+            'admitted':admitted
+        }
         messages.success(request, "Login sucessfully, welcome")
-        return render(request, 'dashboard/dash.html',{'cohorts':cohorts, 'profile':myprofile, 'passcode':studentcode,'myid':myid, 'adimitted_student':adimitted_student})
+        return render(request, 'dashboard/dash.html', context=context)
     
     def post(self, request):
         return render(request, 'dashboard/dash.html')
@@ -55,7 +89,16 @@ def approved(request, pk):
     payment_approved.payment_status = 'approved'
     payment_approved.mysave()
     payment_approved.save()
-    return redirect('dash')
+    messages.success(request, "payment appoved sucessful")
+    return redirect('payment_approval')
+
+
+
+def myapproved(request, pk):
+    assign = Assigment.objects.get(pk=pk)
+    assign.status = 'complete'
+    assign.save()
+    return redirect('assigment_approval')
     
     
     

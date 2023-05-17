@@ -20,14 +20,14 @@
         <div class="container container-form">
         <div class="card  ">
         
-            <h3 class="mx-5 mt-5 ">Complete your application your are few step ahead </h3>
+            <h3 class="mx-5 mt-5 text-warning ">Complete your application your are few step ahead </h3>
            
                 
 
   
   <div class="card-body">
     {% include  'message.html' %}
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data" >
       {% csrf_token %}
       <div class="row mt-5">
         <div class="col-md-6">
@@ -103,8 +103,8 @@
           <label for="#" class="form-lable">Perfered Course:</label>
          <select name="course" id="" class="form-select" required/>
           <option selected>choose Training Course</option>
-          <option value="Front-end">Front-End Development</option>
-          <option value="full-stack">Full Stack Development</option>
+          <option value="Front-End Development">Front-End Development</option>
+          <option value="Full-Stack Development">Full Stack Development</option>
          </select>
 
         </div>
@@ -126,8 +126,8 @@
           <label for="#" class="form-lable">CERTIFICATE:</label>
          <select name="certificate" id="" class="form-select" required/>
           <option selected>choose Choice</option>
-          <option value="Diploma">Diploma(Front-end)</option>
-          <option value="Advanced">Advanced(Full Stack)</option>
+          <option value="Diploma(Front-end)">Diploma(Front-end)</option>
+          <option value="Advanced(Full Stack)">Advanced(Full Stack)</option>
          </select>
 
         </div>

@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View
 from dash.models import Cohorts,Payment
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Livesesion, Recapsesion
+from projects .models import Task, Task_collections
+from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your views here.
@@ -75,3 +78,42 @@ class Recapclassroom(LoginRequiredMixin,View):
         
     def post(self,request):
         return render(request, 'dashboard/recap_classroom.html',{})
+    
+    
+
+class Tasks(LoginRequiredMixin,View):
+    login_url = 'login'
+    def get(self,request):
+        task =  Task.objects.filter(status='pending')
+        return render(request, 'dashboard/task.html',{'allcohorts':task })
+        
+    def post(self,request):
+        return render(request, 'dashboard/task.html')
+
+
+class Taskscollection(LoginRequiredMixin,View):
+    login_url = 'login'
+    
+    def get(self,request):
+        task =  Task.objects.filter(status='pending')
+        
+        
+        context = {
+            
+            'task': task
+            
+        }
+        return render(request, 'dashboard/task_collection.html',context=context)
+        
+    def post(self,request):
+        task_collection = request.POST['project']
+        link = request.POST['url']
+        screen_short = request.FILES.get('myfiles')
+        create_task = Task_collections.objects.create( task=task_collection,links=link,
+        screen_short=screen_short,student=request.user)
+        create_task.status = 'pending'
+        create_task.save()
+        messages.success(request, 'task submitted successfully pending verification')
+        return redirect('task_collwction')
+        
+        # return render(request, 'dashboard/task_collection.html')

@@ -1,6 +1,7 @@
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
 from dash.models import Payment, Cohorts
+from django.contrib.auth import get_user_model
 
 
 # Create your models here.
@@ -10,6 +11,8 @@ from dash.models import Payment, Cohorts
 # header
 # description
 # courses
+
+User = get_user_model()
 
 mystatus = (
     ('expired', 'expired'),
@@ -28,6 +31,84 @@ class Project(models.Model):
     
     def __str__(self):
         return self.project_name
+    
+    
+
+assigment = (
+    ('reviewing', 'reviewing'),
+     ('complete', 'complete')
+)
+
+
+class Assigment(models.Model):
+    git_hub = models.CharField(max_length=100)
+    user =   models.ForeignKey(User, on_delete=models.CASCADE)
+    project  = models.CharField(max_length=10000)
+    cohorts =  models.ForeignKey(Cohorts, on_delete=models.CASCADE)
+    date  =   models.DateField(auto_now_add=True)
+    passcode = models.CharField(max_length=200)
+    status  = models.CharField(max_length=200, choices=assigment)
+    
+    
+    def __str__(self):
+        return self.project
+    
+    
+class Score(models.Model):
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    my_assigment =models.ForeignKey(Assigment, on_delete=models.CASCADE)
+    score  = models.IntegerField()
+    date  =  models.DateField(auto_now_add=True)
+    
+    def __str__(self):
+        return str(self.score)
+    
+    def score_caculations(student):
+        scores = Score.objects.filter(student=student)
+        total_scores  = sum(myscore.score for myscore in scores )
+        return total_scores
+task_satus = (
+    ('pending', 'pending'),
+     ('complete', 'complete')
+)
+
+class Task(models.Model):
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    task   = models.CharField(max_length=200)
+    status  = models.CharField(choices=task_satus, max_length=200)
+    task_img = models.ImageField(upload_to='taskimage')
+    links =  models.URLField()
+    task_description = RichTextUploadingField(blank=True)
+    
+    
+    def __str__(self):
+        return self.task
+    
+    
+    
+
+
+ 
+
+
+
+
+class Task_collections(models.Model):
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    task   = models.CharField(max_length=500)
+    status  = models.CharField(choices=task_satus, max_length=200)
+    screen_short= models.ImageField(upload_to='taskimage', ) 
+    links =   models.URLField(blank=True)
+    # links2  =  models.URLField(blank=True)
+    # links3  =  models.URLField(blank=True)
+    
+    def __str__(self):
+        return str(self.task)
+
+
+    
+    
+    
     
     
     

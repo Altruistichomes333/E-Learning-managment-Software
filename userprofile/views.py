@@ -36,4 +36,4 @@ class Profile(LoginRequiredMixin,View):
         courses=course,laptop=laptop,certifcate=certificate, occupation=occupation,location=training_location,
         social_media=social_media,social_medialink=link, uplaod_picture=uplaod_picture,user=request.user )
         messages.success(request, "profile created succesfully")
-        return redirect('dash')
+        return redirect('task')
