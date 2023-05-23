@@ -37,3 +37,10 @@ class Profile(LoginRequiredMixin,View):
         social_media=social_media,social_medialink=link, uplaod_picture=uplaod_picture,user=request.user )
         messages.success(request, "profile created succesfully")
         return redirect('task')
+
+
+
+
+
+    
+

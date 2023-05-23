@@ -16,16 +16,18 @@ User = get_user_model()
 
 mystatus = (
     ('expired', 'expired'),
-     ('active', 'active')
+     ('active', 'active'),
+      ('pending', 'pending')
 )
+
 
 
 class Project(models.Model):
     project_name = models.CharField(max_length=200)
-    ending_date = models.DateTimeField(auto_created=True)
-    start_date = models.DateField(auto_created=True)
-    cohorts =   models.ForeignKey(Cohorts, on_delete=models.CASCADE)
-    status =    models.CharField(max_length=200, choices=mystatus)
+    ending_date = models.DateField(auto_created=True,blank=True, null=True)
+    start_date = models.DateField(auto_created=True,blank=True, null=True)
+    cohorts =   models.ForeignKey(Cohorts, on_delete=models.CASCADE, blank=True, null=True)
+    status =    models.CharField(max_length=200, choices=mystatus, default='pending')
     descriptions = RichTextUploadingField(blank=True)
     
     

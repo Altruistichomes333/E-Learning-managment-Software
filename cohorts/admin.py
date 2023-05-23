@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Livesesion,Trainingsession,Recapsesion,Recapcourse
+from .models import Livesesion,Trainingsession,Recapsesion,Recapcourse,Ourteam
 
 # Register your models here.
 @admin.register(Livesesion)
@@ -20,3 +20,8 @@ class Recap(admin.ModelAdmin):
 @admin.register(Recapcourse)
 class Recap(admin.ModelAdmin):
     list_display = ('name',)
+
+
+@admin.register(Ourteam)
+class Ourteam(admin.ModelAdmin):
+    list_display = ('name','files','link')

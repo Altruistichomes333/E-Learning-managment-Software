@@ -1,0 +1,76 @@
+{% extends "dashboard/header.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block content %}
+
+    <div class="page-wrapper">
+        <div class="content container-fluid text-info">
+           
+              <h1 class="text-danger"> as a Community member is a great to join our various community online 
+               
+                </h1>
+
+         
+
+
+        
+          
+   
+          
+
+
+
+                <div class="row staff-grid-row">
+                {% for task in community  %}
+  
+                <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
+                <div class="profile-widget">
+                <div class="profile-img" >
+                
+              <img class="avatar" src="{{task.files.url}}" alt="">
+                
+                </div>
+                <h4 class="user-name m-t-10 m-b-0 text-ellipsis"><a href="">{{task.name}}</a></h4>        
+                
+               
+                <a href="{{ task.link }}"class="btn btn-danger">click to join</a> 
+                
+
+            
+
+               
+                </div>
+                </div>
+                {% endfor %}
+
+
+              
+                </div>
+              
+               
+                
+                
+                
+               
+          
+
+           
+
+
+
+
+        </div>
+        </div>
+        
+    
+    {% endblock content %}
+</body>
+</html>

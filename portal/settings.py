@@ -71,7 +71,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'cohorts.context_processors.get_cohorts'
+                'cohorts.context_processors.get_cohorts',
+                'cohorts.context_processors.get_profiles'
+                
                 
             ],
         },
@@ -96,9 +98,9 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'obidients',
-        'USER': 'obidients',
-        'PASSWORD': 'obidients',
+        'NAME': 'obidient',
+        'USER': 'obidient',
+        'PASSWORD': 'obidient',
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -171,4 +173,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'registration.MyUser' 
 
 # LOGOUT_REDIRECT_URL = 'login'
+
+#email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Replace with your SMTP host
+EMAIL_PORT = 587  # Replace with your SMTP port
+EMAIL_USE_TLS = True  # Use TLS encryption for security
+EMAIL_HOST_USER = 'obidientsclass@gmail.com'  # Replace with your email address
+EMAIL_HOST_PASSWORD = 'fcyxanxbkwidvxro'  # Replace with your email password
 

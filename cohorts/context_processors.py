@@ -2,6 +2,7 @@ from dash.models import Cohorts
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.contrib.auth import get_user_model
+from userprofile.models import Profiles
 
 user = get_user_model()
 
@@ -14,6 +15,14 @@ def get_cohorts(request):
    
    
 
+
+def get_profiles(request):
+    try:
+       profilesdatials = Profiles.objects.get(user=request.user)
+       return {'allprofile': profilesdatials}
+    except:
+        return {}
+   
 
 # class Cohorts(View):
 #     def get_cohorts(self, request):

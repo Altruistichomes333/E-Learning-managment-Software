@@ -4,8 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Project, Assigment
 from dash.models import Payment,Cohorts
 from django.contrib import messages
-
-
+from userprofile.models import Profiles
+from .form import bodyform
 
 
 # Create your views here.
@@ -19,15 +19,38 @@ class Projects(LoginRequiredMixin,View):
         # except: payments =  None
         projects = Project.objects.filter(status='active')
         expired_projects = Project.objects.filter(status='expired')
+        try:
+            myprofile = Profiles.objects.get(user=request.user)
+        except: myprofile = None
         # fullstack = Recapsesion.objects.filter(courses__name='Full-Stack Engineering')
         # front_end = Recapsesion.objects.filter(courses__name='Front-end Engineering')
-        return render(request, 'dashboard/project.html',{'projects':projects, 'expired_projects': expired_projects})
-       
-        
+        return render(request, 'dashboard/project.html',{'myprofile':myprofile,'projects':projects, 'expired_projects': expired_projects})
+
         
     def post(self,request):
         return render(request, 'dashboard/project',{})
     
+
+
+class Create_Projects(LoginRequiredMixin,View):
+    login_url = 'login'
+    def get(self,request):
+      form = bodyform(request.POST)
+      return render(request, 'dashboard/project_form.html',{'form':form})
+
+        
+    def post(self,request):
+        descrip = bodyform(request.POST)
+        project_name =  request.POST['project']
+        start_date =     request.POST['start_date']
+        end_date   =     request.POST['end_date']
+        
+        create_myproject = Project.objects.create(project_name=project_name,start_date=start_date,ending_date=end_date,descriptions=descrip )
+        create_myproject.save()
+        messages.success(request,"project created successfully")
+        return render(request, 'dashboard/project_form.html',{})
+
+
 
 class Projects_datials(View):
     def get(self,request, pk):
@@ -157,3 +180,18 @@ class Assigment_approval(View):
     
     def post(self,request):
         return render(request, "dashboard/assigment.html")
+    
+
+class Approve_project(LoginRequiredMixin,View):
+    login_url = 'login'
+    def get(self,request):
+        
+        projects = Project.objects.filter(status='pending')
+        expired_projects = Project.objects.filter(status='expired')
+    
+        return render(request, 'dashboard/project_approval.html',{'projects':projects, 'expired_projects': expired_projects})
+
+        
+    def post(self,request):
+        return render(request, 'dashboard/project_approval.html',{})
+    
