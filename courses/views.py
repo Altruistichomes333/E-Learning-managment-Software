@@ -5,6 +5,7 @@ from .models import Materials, Courses
 from django.contrib import messages
 from dash.models import Payment
 import pdb
+from userprofile.models import Profiles
 # Create your views here.
 
 
@@ -12,9 +13,12 @@ class MyCourses(LoginRequiredMixin,View):
     login_url = 'login'
     
     def get(self,request):
+        try:
+            adimission = Profiles.objects.get(user=request.user)
+        except:   adimission =  None
         front_end = Courses.objects.filter(material__name='Front-end-materials')
         my_back = Courses.objects.filter(material__name='Back-end-materials')
-        return render(request, 'dashboard/training_materials.html',{'front_end':front_end, 'my_back':my_back,})
+        return render(request, 'dashboard/training_materials.html',{'front_end':front_end, 'my_back':my_back,'adimission':adimission})
     
     
     def post(self,request):
@@ -29,7 +33,11 @@ class Materialspayment(LoginRequiredMixin,View):
             payments= Payment.objects.get(user=request.user)
         except:   payments =  None
         
-        return render(request, "dashboard/payment.html",{'payment':payments})
+        try:
+            adimission = Profiles.objects.get(user=request.user)
+        except:   adimission =  None
+        
+        return render(request, "dashboard/payment.html",{'payment':payments, 'adimission':adimission})
     
     def post(self, request):
         materials = request.POST['materials']

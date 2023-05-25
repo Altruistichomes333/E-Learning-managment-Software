@@ -13,20 +13,8 @@
 
     <div class="page-wrapper">
         <div class="content container-fluid">
-        <div class="page-header">
-        <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-        <h5 class="text-uppercase mb-0 mt-0 page-title">Blog</h5>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-        <ul class="breadcrumb float-right p-0 mb-0">
-        <li class="breadcrumb-item"><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-        <li class="breadcrumb-item"><a href="index.html">Blog</a></li>
-        <li class="breadcrumb-item"><span> Blog</span></li>
-        </ul>
-        </div>
-        </div>
-        </div>
+            {% if adimission.status == 'admitted' %}
+        
         <h3 class="blog-title"><a href="">Full Stack Engeering Material</a></h3>
   
         <div class="row">
@@ -81,6 +69,12 @@
 
         
 
+        {% else %}
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+         <h5 class="text-uppercase mb-0 mt-0 page-title text-danger">Access denied admission  status is pending </h5>
+         </div>
+
+         {% endif %}
 
         </div>
 

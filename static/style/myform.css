@@ -83,7 +83,7 @@ input[type=tel]:focus{
 .form-label{
 
     padding-top: 10px;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 900;
 }
 
@@ -137,7 +137,7 @@ input[type=tel]:focus{
 .fa-forward{
 
     position: absolute;
-    top:92%;
+    top:93%;
    right: 30%;
    font-size: 20px;
    display: flex;
@@ -168,8 +168,8 @@ form{
 
 .form{
 
-    background-color: #1DA1F2;
-    width: 70%;
+    background-color: #009688;
+    width: 100%;
     text-align: center;
     display: inline-block;
     height: 100vh;
@@ -184,12 +184,14 @@ form{
 
 
 
-@media screen and (max-width:900px) {
+@media screen and (max-width:600px) {
+   
 
     form{
 
-        width: 70%;
+        width: 100%;
         margin-top: 50px;
+       
     }
     
 
@@ -197,17 +199,13 @@ form{
     .form {
 
         width: 100%;
+       
+
     }
         
 
 
 
-    .container {
-
-        background-color: #1DA1F2;
-        
-
-    }
 
 
     .container h2 {

@@ -8,11 +8,13 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
+
 """
 
 from pathlib import Path
 import os
 from django.contrib import messages
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -45,7 +47,8 @@ INSTALLED_APPS = [
     'cohorts',
     'ckeditor',
     'ckeditor_uploader',
-    'projects'
+    'projects',
+    'homepage'
 ]
 
 MIDDLEWARE = [
@@ -176,9 +179,17 @@ AUTH_USER_MODEL = 'registration.MyUser'
 
 #email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # Replace with your SMTP host
-EMAIL_PORT = 587  # Replace with your SMTP port
-EMAIL_USE_TLS = True  # Use TLS encryption for security
-EMAIL_HOST_USER = 'obidientsclass@gmail.com'  # Replace with your email address
-EMAIL_HOST_PASSWORD = 'fcyxanxbkwidvxro'  # Replace with your email password
+EMAIL_HOST = 'mail.skylineict.com'  # Replace with your SMTP host
+EMAIL_PORT =  465  # Replace with your SMTP port
+EMAIL_USE_SSL = True
+# EMAIL_USE_TLS = True  # Use TLS encryption for security
+EMAIL_HOST_USER = 'techspace@skylineict.com'  # Replace with your email address
+EMAIL_HOST_PASSWORD = 'Monoskey@93'  # Replace with your email password
 
+# #email settings
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'  # Replace with your SMTP host
+# EMAIL_PORT = 587  # Replace with your SMTP port
+# EMAIL_USE_TLS = True  # Use TLS encryption for security
+# EMAIL_HOST_USER = 'obidientsclass@gmail.com'  # Replace with your email address
+# EMAIL_HOST_PASSWORD = 'fcyxanxbkwidvxro'  # Replace with your email password

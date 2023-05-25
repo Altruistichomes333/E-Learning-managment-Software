@@ -13,6 +13,12 @@
 
     <div class="page-wrapper">
         <div class="content container-fluid">
+
+          {% if adimission.status == 'admitted' %}
+          
+          
+          
+        
           
        
         
@@ -105,9 +111,14 @@
             </div>
   
           {% endif %}
-       
 
 
+         {% else %}
+         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+          <h5 class="text-uppercase mb-0 mt-0 page-title text-danger">Access denied admission  status is pending </h5>
+          </div>
+
+          {% endif %}
 
 
         </div>
