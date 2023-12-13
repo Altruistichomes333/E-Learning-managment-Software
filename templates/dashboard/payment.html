@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>payment</title>
 </head>
 <body>
     {% block content %}
@@ -22,9 +22,10 @@
           
        
         
-           {% if payment  %}
+           {% if payment.payment_type == 'full payment (100%)'  %}
+         
            <h3 class="blog-title" style="color: green;"> successfully made payment</a></h3>
-           <p>dear <b>{{user.username}}</b> <b style="color: red;"> payment  has been acknowledge  pending verification from our team, click on the button below to generate your payment receipt</b>  </p>
+           <p>dear <b>{{user.username}}</b> <b style="color: red;"> payment  has been paid in full  and acknowledge  pending verification from our team, click on the button below to generate your payment receipt</b>  </p>
     
           <div class="py-2">
            <a class="btn btn-sm btn-primary" href="{% url 'slips'  %}">Generate Payment Slip</a>
@@ -44,11 +45,24 @@
               <br>
              <b> Bank:FCMB
               </b>
-          </p>
 
+             
+          </p>
+ 
+          {% if not  payment.amount %}
           <div class="row ">
+          
             <div class="col-lg-10">
-            <div class="card">
+            
+              
+          
+            
+              {% if payment.amount %}
+              <h2 class="text-success">Your Current payment For course Registration is <span style="color: red;">N {{total_payment}}</span> <br/>complete your payment within 30 days</h2>
+              
+              {% endif %}
+
+              <div class="card">
             <div class="card-header">
              {% include 'dashboard/mymessage.html' %}
             </div>
@@ -60,8 +74,10 @@
             <select name="materials" id="" class="form-control">
               <option value="front-end Engineering">front-end Engineering N12,500</option>
               <option value="full-stack Engineering">full-stack Engineering(N22,500</option>
-              <option value="choose payment type" selected>choose courses</option>
-  
+              
+                <option value="Product Design">Product Design(UI,UX-15,500)</option>
+                
+              
   
             </select>
             </div>
@@ -85,7 +101,7 @@
               <select name="payment_type" id="" class="form-control" required/>
                 
                 <option value="down payment(50%)">Down Payment(50%)</option>
-                <option value="full payment (100)%">full payment (100)%</option>
+                <option value="full payment (100%)">full payment (100)%</option>
                 <option value="choose payment type" selected>choose payment type</option>
                 
                 
@@ -102,7 +118,24 @@
             <button type="submit" class="btn btn-primary">Submit</button>
             </div>
             </form>
-  
+
+            {% comment %} {% else %}
+            <h2 class="text-success">Your Current payment For course Registration is <span style="color: red;">N {{total_payment}}</span> <br/>complete your payment within 30 days</h2>
+           <a href="{% url 'updated' payment.pk %}" class="btn btn-danger">Pay Remaining Balance</a>
+
+       {% endcomment %}
+
+{% elif total_payment >= 22500 %}
+      
+<h2 class="text-success">Congratulation your payment is completed </h2>
+
+{% elif total_payment != 22500 %}
+<h2 class="text-success">Your Current payment For course Registration is <span style="color: red;">N {{total_payment}}</span> <br/>complete your payment within fews days</h2>
+           <a href="{% url 'updated' payment.pk %}" class="btn btn-danger">Pay Remaining Balance</a>
+       
+     
+            
+            {% endif %}
   
   
             </div>

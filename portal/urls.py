@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+
 urlpatterns = [
     path('skylinenow/', admin.site.urls),
      path('', include('homepage.urls')),
@@ -27,7 +28,10 @@ urlpatterns = [
     path('courses/', include("courses.urls")),
     path('cohorts/', include("cohorts.urls")),
     path('projects/', include("projects.urls")),
+    path('materials/', include("materials.urls")),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('credentail/', include('credential.urls')),
+    path('send_email', include('emailssending.urls')),
    
 
 ]

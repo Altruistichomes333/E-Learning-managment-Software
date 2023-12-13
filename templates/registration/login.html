@@ -37,9 +37,10 @@
             <div class="card-body" style="background-color: #009688;">
                 
                     
-                  
+              {% include  'message.html' %}
                    
                     <div class="container message  ">
+                   
                     
                     <div class="form" style="
                     margin-top: 110px;
@@ -51,7 +52,7 @@
 
                         <div class="card-text">
                             <label for="" class="form-label">Whatsapp Number:</label>
-                            <input type="tel" minlength="10" maxlength="11"  name="phone" id="phone" class="form-control" placeholder="Enter Whatsapp No " required/>
+                            <input type="number" minlength="10" maxlength="11"  name="phone" id="phone" class="form-control" placeholder="Enter Whatsapp No " required/>
                             <div class="whatsapp"><i class="fa-brands fa-whatsapp"></i></div>
 
                         </div>

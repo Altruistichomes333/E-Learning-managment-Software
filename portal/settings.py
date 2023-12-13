@@ -48,7 +48,11 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'projects',
-    'homepage'
+    'homepage',
+    'emailssending',
+    'materials',
+    'credential',
+   
 ]
 
 MIDDLEWARE = [
@@ -76,6 +80,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'cohorts.context_processors.get_cohorts',
                 'cohorts.context_processors.get_profiles'
+                 
+                
                 
                 
             ],
@@ -151,7 +157,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'statics')
 ]
 
 

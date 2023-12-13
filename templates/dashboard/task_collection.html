@@ -14,7 +14,11 @@
     <div class="page-wrapper">
         <div class="content container-fluid">
           
+       {% if not task_collection.count == 4 %}
+      
        
+       
+   
           
 
           <h3 class="text-danger"><a href="#">Task collections Page</a></h3>
@@ -22,7 +26,10 @@
         <p class="text-danger">share a screenshot of your task</p>
         <p class="text-danger">copy and paste your social media profile link below </p>
         <p class="text-danger">after submission wait for approval from our team </p>
-         
+
+        <h3><a href="#" style="color:red">Please submit all 7 tasks before proceeding to the dashboard <br>
+        You submitted <span style="color: green;  font-weight: bolder; ">{{ task_collection.count}} </span> Task</a></h3>
+     
         <!-- {% include 'dashboard/mymessage.html' %} -->
           <div class="row ">
             <div class="col-lg-10">
@@ -76,6 +83,50 @@
 
 
 
+            {% else %}
+
+            <h3><a href="#" style="color:red">Congratulations! You have successfully submitted all your tasks</a></h3>
+          <div class="card-body">
+          <div class="table-responsive">
+          <table class="table custom-table">
+          <thead class="thead-light">
+          <tr>
+          <th> Student Name </th>
+          <th>task</th>
+          <th>Status </th>
+          <th>links</th>
+        
+          
+          
+          </tr>
+          </thead>
+          
+          <tbody>
+            {% for adimitted_student in task_collection  %}
+          
+          <tr>
+          <td>
+          <h2><a href="profile.html" class="avatar text-white"><img src="{% static 'assets/img/profile/img-1.jpg' %}" alt=""></a><a href="{% url 'profileview' adimitted_student.pk %}">{{adimitted_student.student}}<span></span></a></h2>
+          </td>
+          
+          <td>{{adimitted_student.task}}</td>
+          <td style="color: rgb(44, 186, 44);">{{adimitted_student.status}}</td> 
+          
+          <td> <a href="{{adimitted_student.links}}"> Task link</td></a>
+          
+          
+          
+          
+          </tr>
+          
+          {% endfor %}
+          </tbody>
+          </table>
+          </div>
+          </div>
+
+
+          {% endif %}
 
         </div>
         </div>

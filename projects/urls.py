@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Projects, Projects_datials, Payment_approval,view_payment,Submitassigment, Assigment_approval,Pending_payment,Create_Projects,Approve_project
+from .views import Projects, Projects_datials, Payment_approval,view_payment,Submitassigment, Assigment_approval,Pending_payment,Create_Projects,Approve_project, Task_approval,approved_task,Payment_jected, RatingScore
 
 from dash.views import myapproved
 
@@ -16,9 +16,14 @@ urlpatterns = [
     path('assigment_approval', Assigment_approval.as_view(),name='assigment_approval'),
     path('create_project', Create_Projects.as_view(),name='add_project'),
     path('approve_project', Approve_project.as_view(),name='approval_project'),
+    path('approved/<int:pk>',myapproved, name='assigment_approved'),
+    path('task_approval', Task_approval.as_view(), name='task_me'),
+    path('task_approved/<int:pk>',approved_task, name='task_appro' ),
+    path("rejected_payment/",Payment_jected.as_view(), name="payment_rejected" ),
+    path("rating/",RatingScore.as_view(), name="reating" ),
     
     
-    path('approved/<int:pk>',myapproved, name='assigment_approved')
+    
     
     
 ]

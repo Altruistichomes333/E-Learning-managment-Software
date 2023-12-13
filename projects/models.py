@@ -38,7 +38,8 @@ class Project(models.Model):
 
 assigment = (
     ('reviewing', 'reviewing'),
-     ('complete', 'complete')
+     ('complete', 'complete'),
+     ('reject', 'reject')
 )
 
 
@@ -49,26 +50,32 @@ class Assigment(models.Model):
     cohorts =  models.ForeignKey(Cohorts, on_delete=models.CASCADE)
     date  =   models.DateField(auto_now_add=True)
     passcode = models.CharField(max_length=200)
-    status  = models.CharField(max_length=200, choices=assigment)
+    status  = models.CharField(max_length=200, choices=assigment,default='reviewing')
+    score_project  = models.IntegerField(default=1)
+
+    def score_caculations(student):
+        scores = Assigment.objects.filter(user=student)
+        total_scores  = sum(myscore.score_project for myscore in scores )
+        return total_scores
     
     
     def __str__(self):
         return self.project
     
     
-class Score(models.Model):
-    student = models.ForeignKey(User, on_delete=models.CASCADE)
-    my_assigment =models.ForeignKey(Assigment, on_delete=models.CASCADE)
-    score  = models.IntegerField()
-    date  =  models.DateField(auto_now_add=True)
+# class Score(models.Model):
+#     student = models.ForeignKey(User, on_delete=models.CASCADE)
+#     my_assigment =models.ForeignKey(Assigment, on_delete=models.CASCADE)
+#     score  = models.IntegerField()
+#     date  =  models.DateField(auto_now_add=True)
     
-    def __str__(self):
-        return str(self.score)
+#     def __str__(self):
+#         return str(self.score)
     
-    def score_caculations(student):
-        scores = Score.objects.filter(student=student)
-        total_scores  = sum(myscore.score for myscore in scores )
-        return total_scores
+#     def score_caculations(student):
+#         scores = Score.objects.filter(student=student)
+#         total_scores  = sum(myscore.score for myscore in scores )
+#         return total_scores
 task_satus = (
     ('pending', 'pending'),
      ('complete', 'complete')
@@ -106,6 +113,7 @@ class Task_collections(models.Model):
     
     def __str__(self):
         return str(self.task)
+
 
 
     

@@ -6,6 +6,9 @@ from dash.models import Payment,Cohorts
 from django.contrib import messages
 from userprofile.models import Profiles
 from .form import bodyform
+from .models import Task_collections
+from django.urls import reverse_lazy, reverse
+import pdb
 
 
 # Create your views here.
@@ -22,6 +25,13 @@ class Projects(LoginRequiredMixin,View):
         try:
             myprofile = Profiles.objects.get(user=request.user)
         except: myprofile = None
+
+
+        try:
+            assign = Assigment.objects.get(user=request.user)
+            if assign.score_project < 15:
+                return  redirect('reating')
+        except: assign = None
         # fullstack = Recapsesion.objects.filter(courses__name='Full-Stack Engineering')
         # front_end = Recapsesion.objects.filter(courses__name='Front-end Engineering')
         return render(request, 'dashboard/project.html',{'myprofile':myprofile,'projects':projects, 'expired_projects': expired_projects})
@@ -35,7 +45,7 @@ class Projects(LoginRequiredMixin,View):
 class Create_Projects(LoginRequiredMixin,View):
     login_url = 'login'
     def get(self,request):
-      form = bodyform(request.POST)
+      form = bodyform
       return render(request, 'dashboard/project_form.html',{'form':form})
 
         
@@ -45,7 +55,8 @@ class Create_Projects(LoginRequiredMixin,View):
         start_date =     request.POST['start_date']
         end_date   =     request.POST['end_date']
         
-        create_myproject = Project.objects.create(project_name=project_name,start_date=start_date,ending_date=end_date,descriptions=descrip )
+        create_myproject = Project.objects.create(project_name=project_name,start_date=start_date,ending_date=end_date)
+        create_myproject.descriptions =descrip
         create_myproject.save()
         messages.success(request,"project created successfully")
         return render(request, 'dashboard/project_form.html',{})
@@ -89,6 +100,18 @@ class Payment_approval(View):
         
     def post(self, request):
         return render(request, "dashboard/pending_payment.html")
+
+
+
+class Payment_jected(View):
+    def get(self, request):
+        payment_materials = Payment.objects.filter(payment_status="reject")
+        pending_approval = Payment.objects.filter(payment_status="pending")
+        return render(request, "dashboard/payment_reject.html", {'payment_materials':payment_materials,'pending_approval':pending_approval})
+        
+        
+    def post(self, request):
+        return render(request, "dashboard/payment_reject.html")
     
     
 
@@ -151,9 +174,14 @@ class Submitassigment(View):
         
       
        
-        
+        if Assigment.objects.filter(project=project_title,user=request.user).exists():
+            messages.error(request, "multiple submissions of the same assignment are not permitted ")
+            return render(request, 'dashboard/assigmentsubmision.html')
         assigment = Assigment.objects.create(passcode=passcod, project=project_title,git_hub=git_hub,cohorts=cohorts,user=request.user)
         assigment.status = 'reviewing'
+       
+        
+
         assigment.save()
         messages.success(request, "assigment submited sucessfully")
         return  redirect('dash')
@@ -163,7 +191,9 @@ class Submitassigment(View):
   
 class Assigment_approval(View):
     def get(self,request):
-        assigment_review = Assigment.objects.filter(status='reviewing')
+     
+        
+        assigment_review = Assigment.objects.filter(status='reviewing ')
         complete_assigment = Assigment.objects.filter(status='complete')
         
         try:
@@ -175,6 +205,7 @@ class Assigment_approval(View):
             'complete_assigment':complete_assigment,
             'review': review
         }
+        # pdb.set_trace()
         return render(request, "dashboard/assigment.html", context=context)
     
     
@@ -194,4 +225,45 @@ class Approve_project(LoginRequiredMixin,View):
         
     def post(self,request):
         return render(request, 'dashboard/project_approval.html',{})
+    
+    
+    
+class Task_approval(LoginRequiredMixin,View):
+    login_url = 'login'
+    def get(self,request):
+        
+        # all_task = Task_collections.objects.all()
+        
+        task_pending = Task_collections.objects.filter(status='pending')
+        
+       
+        
+        return render(request, "dashboard/task_approval.html",{'task_collections':task_pending})
+    
+    
+    def post(self,request):
+        return render(request, "dashboard/task_approval.html")
+    
+def approved_task(request, pk):
+    task_get = Task_collections.objects.get(pk=pk)
+    task_get.status = 'complete'
+    task_get.save()
+    messages.success(request, 'task approved Sucessfully ')
+    return redirect('task_me')
+
+
+
+
+class RatingScore(View):
+    def get(self,request):
+        return render(request,'rating.html')
+    
+
+    
+    def post(self,request):
+        return render(request,'rating.html')
+    
+    
+    
+
     

@@ -22,7 +22,14 @@ def get_profiles(request):
        return {'allprofile': profilesdatials}
     except:
         return {}
-   
+
+
+def profile_get(request, pk):
+    try:
+       profilesnow = Profiles.objects.get(pk=pk)
+       return {'myprofi': profilesnow}
+    except:
+        return {}
 
 # class Cohorts(View):
 #     def get_cohorts(self, request):

@@ -1,4 +1,4 @@
-﻿{% extends "dashboard/header.html" %}
+﻿﻿{% extends "dashboard/header.html" %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Payment</title>
 </head>
 <body>
     {% block content %}
@@ -24,8 +24,20 @@
               
            
             <p> <a href=" {% url 'pending_payment' %}" class=" btn btn-warning text-white">Approved Payment </a> </p>
+            
             {% endif %}
         <h5 class="text-uppercase mb-0 mt-0 page-title">Pending Materials payment</h5>
+        
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            {% if payment_materials %}
+              
+           
+            
+            <p> <a href=" {% url 'payment_rejected' %}" class=" btn btn-warning text-white">Rejected Payment </a> </p>
+            {% endif %}
+        
         
         </div>
       
@@ -48,7 +60,7 @@
             <th>Payment Name </th>
             <th>Payment Type</th>
             <th>Course</th>
-            <th>Status</th>
+          
             <th>Date</th>
             <th>POP</th>
             <th class="text-right">Action</th>
@@ -65,16 +77,18 @@
             </td>
             <td>{{payment_materials.payment_type}}</td>
             <td>{{payment_materials.courses}}</td> 
-            <td>{{payment_materials.payment_status}}</td>
-            <td>{{payment_materials.date|date:'D-M-Y' }}</td>
+       
+             <td>{{payment_materials.amount}}</td>
+            <!--<td>{{payment_materials.date|date:'D-M-Y' }}</td>-->
             <td><i><a href="{% url 'view_payment' payment_materials.pk %}"class="typcn typcn-eye btn btn-danger btn" style="font-size: 12;">view </a> </i></td>
             <td class="text-right">
             <a href="{% url 'myapproved' payment_materials.pk %}" class="btn btn-primary btn-sm">
             <i class="far fa-edit">mark</i>
             </a>
-             <button type="submit" data-toggle="modal" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1">
-            <i class="far fa-trash-alt"> reject</i>
-            </button>
+            <a href="{% url 'payment_reject' payment_materials.pk %}" class="btn btn-danger btn-sm">
+                <i class="far fa-edit">reject</i>
+                </a>
+           
             </td>
             </tr>
 

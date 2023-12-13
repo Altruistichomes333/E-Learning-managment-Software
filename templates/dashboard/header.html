@@ -19,16 +19,31 @@
 <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/plugins/icons/typicons/typicons.css ' %}">
 <link rel="stylesheet" href="{% static 'assets/css/fullcalendar.min.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <link rel="stylesheet" href="{% static 'assets/css/dataTables.bootstrap4.min.css' %}">
 
 <link rel="stylesheet" href="{% static 'assets/plugins/morris/morris.css' %}">
 
 <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
 <!--[if lt IE 9]>
 		<script src="assets/js/html5shiv.min.js"></script>
 		<script src="assets/js/respond.min.js"></script>
 	<![endif]-->
+
+	<style>
+		.swal2-title {
+    font-size: 17px!important;
+    color: #ff7800;
+}
+
+
+	.btn-primary {
+    background-color: #ff6b07;
+    border: 1px solid #2fdf84;
+    font-size: 12px;}
+	</style>
 </head>
 <body>
 
@@ -151,7 +166,9 @@
 
 
 <div class="dropdown-menu">
+{% if allprofile.first_name  %}
 <a class="dropdown-item" href="{% url 'profileview' allprofile.pk %}">My Profile</a>
+{% endif %}
 <a class="dropdown-item" href="{% url 'logout'  %}">Logout</a>
 </div>
 </li>
@@ -159,7 +176,9 @@
 <div class="dropdown mobile-user-menu float-right"> 
 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
 <div class="dropdown-menu dropdown-menu-right">
-<a class="dropdown-item" href="{% url 'profileview' allprofile.pk %}">My Profile</a>
+	{% if allprofile.first_name  %}
+	<a class="dropdown-item" href="{% url 'profileview' allprofile.pk %}">My Profile</a>
+	{% endif %}
 <a class="dropdown-item" href="{% url 'logout'  %}">Logout</a>
 
 </div>
@@ -198,6 +217,7 @@
 		<li><a href="{% url 'pending'  %}"><span>Pending Admission</span></a></li>
 		<li><a href="{% url 'add_project'  %}"><span>Create Project</span></a></li>
 		<li><a href="{% url 'approval_project'  %}"><span>Approve Project</span></a></li>
+		<li><a href="{% url 'task_me'  %}"><span>Task Approval</span></a></li>
 		
 		
 		</ul>
@@ -244,7 +264,7 @@
 		<a href="#"><img src="{% static 'assets/img/sidebar/icon-7.png' %}" alt="icon"> <span>Tasks</span><span class="menu-arrow"></span> </a>
 		<ul class="list-unstyled" style="display: none;">
 			<li><a href="{% url 'task' %}"><span>Take Task</span></a></li>
-			<li><a href="{% url 'courses' %}"><span>Task colloction</span></a></li>
+			<li><a href="{% url 'task_collwction' %}"><span>Task colloction</span></a></li>
 			
 			</ul>
 		</li>
@@ -305,6 +325,7 @@
 <script src="{% static 'assets/plugins/raphael/raphael-min.js' %}"></script>
 <script src="{% static 'assets/js/apexcharts.js' %}"></script>
 <script src="{% static 'assets/js/chart-data.js' %}"></script>
+
 
 <script src="{% static 'assets/js/app.js' %}"></script>
 </body>

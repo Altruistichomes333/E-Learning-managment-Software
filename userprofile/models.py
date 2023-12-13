@@ -42,6 +42,7 @@ class Profiles(models.Model):
     user =     models.ForeignKey(User, on_delete=models.CASCADE)
     status =   models.CharField(max_length=50, choices=adminsion_status, default='pending')
     uplaod_picture =  models.ImageField(upload_to='profile', default=2)
+    sponsorship = models.CharField(max_length=200, blank=True, null=True)
     #addtionl information
     facebook = models.CharField(max_length=200,blank=True, null=True)
     twitter = models.CharField(max_length=200,blank=True, null=True)

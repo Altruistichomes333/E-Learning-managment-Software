@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, Score, Assigment, Task,Task_collections
+from .models import Project, Assigment, Task,Task_collections
 # Register your models here.
 @admin.register(Project)
 class Student_Project(admin.ModelAdmin):
@@ -7,7 +7,7 @@ class Student_Project(admin.ModelAdmin):
 
 @admin.register(Assigment)
 class Myassigment(admin.ModelAdmin):
-    list_display = ('git_hub','user', 'project', 'cohorts','date','status')
+    list_display = ('git_hub','user', 'project', 'cohorts','date','score_project','status')
     
 
 @admin.register(Task)
@@ -21,9 +21,9 @@ class Task_collect(admin.ModelAdmin):
  
    
     
-@admin.register(Score)
-class Score_Admin(admin.ModelAdmin):
-    list_display = ('student','my_assigment', 'score')
+# @admin.register(Score)
+# class Score_Admin(admin.ModelAdmin):
+#     list_display = ('student','my_assigment', 'score')
     
     
 

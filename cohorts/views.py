@@ -8,13 +8,15 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from userprofile .models import Profiles,Social
 import pdb
+from projects .models import Assigment, Project
 
 
 
 
 # Create your views here.
 
-class Groupscohort(View):
+class Groupscohort(LoginRequiredMixin,View):
+    login_url = 'login'
     def get(self, request, pk):
         mycohorts = Cohorts.objects.filter(pk=pk)
         
@@ -24,13 +26,14 @@ class Groupscohort(View):
         try:
             groupcohort = Cohorts.objects.get(users=request.user)
         except:groupcohort = None
-        return render(request, 'dashboard/mycohorts.html',{'mycohorts': groupcohort, 'mycohort':mycohort })
+        return render(request, 'dashboard/mycohorts.html',{'mycohorts': groupcohort, 'mycohort':mycohort,})
     
     def post(self, request, pk):
         return render(request, 'dashboard/mycohorts.html')
     
 
-class Profileviews(View):
+class Profileviews(LoginRequiredMixin,View):
+    login_url = 'login'
     def get(self, request, pk):
       myprofile = Profiles.objects.get(pk=pk)
      
@@ -42,7 +45,8 @@ class Profileviews(View):
 
 
 
-class Profieupdate(View):
+class Profieupdate(LoginRequiredMixin,View):
+    login_url = 'login'
     def get(self, request, pk):
       myprofile = Profiles.objects.get(pk=pk)
      
@@ -55,8 +59,11 @@ class Profieupdate(View):
         twitter  = request.POST['twitter']
         youtube  = request.POST['youtube']
         first_name = request.POST['first_name']
+        uplaod_profile = request.FILES.get('file')
         last_name = request.POST['last_name']
         phone =    request.POST['phone_number']
+        
+        
         myprofile.git_hub = github
         myprofile.facebook = facebook
         myprofile.twitter =  twitter
@@ -64,6 +71,7 @@ class Profieupdate(View):
         myprofile.first_name = first_name
         myprofile.last_name = last_name
         myprofile.phone_num = phone
+        myprofile.uplaod_picture = uplaod_profile 
         myprofile.save()
         messages.success(request, 'income updated sucessfully ')
         return redirect('dash')
@@ -97,6 +105,15 @@ class Classroom(LoginRequiredMixin,View):
         try:
              payments= Payment.objects.get(user=request.user)
         except: payments =  None
+
+        
+        try:
+            assign = Assigment.objects.get(user=request.user)
+            if assign.score_project < 15:
+                return  redirect('reating')
+        except: assign = None
+
+
         
         try:
             admission = Profiles.objects.get(user=request.user)
@@ -104,7 +121,8 @@ class Classroom(LoginRequiredMixin,View):
         
         fullstack = Livesesion.objects.filter(courses__name='Full-Stack Engineering')
         front_end = Livesesion.objects.filter(courses__name='Front-end Engineering')
-        return render(request, 'dashboard/classroom.html',{'admissionnow':admission,'payments':payments, 'fullstack':fullstack, 'front_end':front_end})
+        product_design = Livesesion.objects.filter(courses__name='Product Design')
+        return render(request, 'dashboard/classroom.html',{'admissionnow':admission,'payments':payments, 'fullstack':fullstack, 'front_end':front_end,'product_design':product_design})
        
         
         
@@ -119,6 +137,12 @@ class Recapclassroom(LoginRequiredMixin,View):
         try:
              payments= Payment.objects.get(user=request.user)
         except: payments =  None
+
+        try:
+            assign = Assigment.objects.get(user=request.user)
+            if assign.score_project < 15:
+                return  redirect('reating')
+        except: assign = None
         
         fullstack = Recapsesion.objects.filter(courses__name='Full-Stack Engineering')
         front_end = Recapsesion.objects.filter(courses__name='Front-end Engineering')
@@ -145,12 +169,14 @@ class Taskscollection(LoginRequiredMixin,View):
     login_url = 'login'
     
     def get(self,request):
+        task_collection =  Task_collections.objects.filter(student=request.user)[:4]
         task =  Task.objects.filter(status='pending')
         
         
         context = {
             
-            'task': task
+            'task': task,
+            'task_collection':task_collection
             
         }
         return render(request, 'dashboard/task_collection.html',context=context)

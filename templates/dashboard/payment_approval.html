@@ -38,7 +38,7 @@
             <th>Payment Name </th>
             <th>Payment Type</th>
             <th>Course</th>
-            <th>Status</th>
+            <th>Amount</th>
             <th>Date</th>
             <th>POP</th>
           
@@ -55,9 +55,13 @@
             </td>
             <td>{{payment_materials.payment_type}}</td>
             <td>{{payment_materials.courses}}</td> 
-            <td>{{payment_materials.payment_status}}</td>
+            <td>N{{payment_materials.amount}}</td>
             <td>{{payment_materials.date|date:'D-M-Y' }}</td>
-            <td><i><a href="{% url 'view_payment' payment_materials.pk %}"class="typcn typcn-eye btn btn-danger btn" style="font-size: 12;">view </a> </i></td>
+            <td><i><a href="{% url 'view_payment' payment_materials.pk %}"class="typcn typcn-eye btn btn-danger btn" style="font-size: 12;">view </a> </i>
+            <a href="{% url 'payment_reject' payment_materials.pk %}" class="btn btn-danger btn-sm">
+                    <i class="far fa-edit">reject</i>
+                    </a>
+            </td>
           
             </tr>
 

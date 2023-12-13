@@ -99,6 +99,7 @@ class Registration(View):
         if User.objects.filter(username=username).exists():
             messages.error(request, "username has been taken")
             return  render(request, 'register.html')
+        
         user = User.objects.create_user(email=email, username=username, phone=phone)
         
         data = {}

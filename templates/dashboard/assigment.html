@@ -14,7 +14,7 @@
    
     <div class="page-wrapper">
         <div class="content container-fluid">
-            {% if review.status %}
+            
         <div class="page-header">
 
             
@@ -47,7 +47,8 @@
             <th>Status</th>
             <th>Date</th>
             <th>git hub</th>
-            <th class="text-right">Action</th>
+            <th class="text-right">cancel</th>
+            <th class="text-right">approved</th>
            
             </tr>
             </thead>
@@ -67,9 +68,10 @@
             <td>{{payment_materials.cohorts}}</td>
             <td>{{payment_materials.project}}</td> 
             <td>{{payment_materials.status}}</td>
-            <td> <Span class=" text-success">{{assigment.status}} </Span><span  class="fa-solid fa-square-check" style="color: rgb(55, 129, 255);"></span></td>
             <td>{{payment_materials.date|date:'D-M-Y' }}</td>
             <td><i><a href="{{payment_materials.git_hub }}" target="_blank" class="typcn typcn-eye btn btn-danger btn" style="font-size: 12;">view </a> </i></td>
+           
+            <td> <a href="{% url 'assigmentrejected' payment_materials.pk %}" class="btn btn-primary btn-sm"><i class="">cancel</i></td>
             <td class="text-right">
             <a href="{% url 'assigment_approved' payment_materials.pk %}" class="btn btn-primary btn-sm">
             <i class="">approved</i>
@@ -89,13 +91,13 @@
             </div>
             </div>
             </div>
-            {% endif %}
+           
 
 
             <div class="page-header">
                 <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <h5 class="text-uppercase mb-0 mt-0 page-title">Approved assigment</h5>
+                <h5 class="text-uppercase mb-0 mt-0 page-title">approved</h5>
                 </div>
               
                 </div>
@@ -130,7 +132,7 @@
                 <tbody>
                 <tr>
                 <td>
-                <h2><a href=""  <img src="" alt="" class="text-danger">{{payment_materials.passcode}}</a></h2>
+                <h2><a href=""  <img src="" alt="" class="text-danger">{{payment_materials.user}}</a></h2>
                 </td>
                 <td>{{payment_materials.cohorts}}</td>
                 <td>{{payment_materials.project}}</td> 

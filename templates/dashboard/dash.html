@@ -6,6 +6,9 @@
 <meta charset="utf-8">
 <title>{% block title %}  Obidient Tech space {{user.username}} {% endblock  %}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+
+
 </head>
 
 
@@ -21,8 +24,16 @@
 <div class="row">
 <div class="col-md-6">
 	<div class="page-title">
-		<marquee behavior="" direction="left" scrolldelay="250"> <b style="color: red;">Welcome Admission is ongoining make sure you  take all task</b></marquee>
+		{% if profile.status == 'admitted' %}
 		
+	
+		<marquee behavior="" direction="left" scrolldelay="250"> <b style="color: red;">Hi, buddy!
+			congratulations, you have been admitted into the Obidient tech space, please proceed to course registration</b></marquee>
+		{% else %}
+		<marquee behavior="" direction="left" scrolldelay="250"> <b style="color: red;">Hi, buddy!
+			congratulations, you have been admitted into the Obidient tech space, please proceed to course registration</b></marquee>
+		
+			{% endif %}
 		</div>
 	
 	
@@ -53,6 +64,7 @@
 <div class="dash-widget dash-widget5">
 <div class="dash-widget-info text-left d-inline-block">
 <span class="text-success"> Projects Score</span>
+{
 <h3 class="text-warning">{{myscore }}%</h3> 
 
 </div>
@@ -166,11 +178,11 @@ Student Performance
 </thead>
 
 <tbody>
-	{% for adimitted_student in adimitted_student  %}
+	{% for adimitted_student in page_obj  %}
 
 <tr>
 <td>
-<h2><a href="profile.html" class="avatar text-white"><img src="{% static 'assets/img/profile/img-1.jpg' %}" alt=""></a><a href="{% url 'profileview' adimitted_student.pk %}">{{adimitted_student.last_name}} {{adimitted_student.first_name}}<span></span></a></h2>
+<h2><a href="{% url 'profileview' adimitted_student.pk %}" class="avatar text-white"><img src="{{adimitted_student.uplaod_picture}}" alt=""></a><a href="{% url 'profileview' adimitted_student.pk %}">{{adimitted_student.last_name}} {{adimitted_student.first_name}}<span></span></a></h2>
 </td>
 
 <td>{{adimitted_student.courses}}</td>
@@ -196,8 +208,38 @@ Student Performance
 
 {% endif %}
 
+<!--  -->
+
+<nav aria-label="...">
+	
+	<ul class="pagination" style="margin-bottom: 200px;">
+	{% if page_obj.has_previous %}
+	  <li class="page-item disabled">
+		<a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+	  </li>
+	
+	  <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+	  {% endif %}
 
 
+	  <li class="page-item active">
+		<a class="page-link" href="#">{{ page_obj.number }}<span class="sr-only">(current)</span></a>
+	  </li>
+	 
+	  <li class="page-item"><a class="page-link" href="?page=1">{{ page_obj.paginator.num_pages }}</a></li>
+	  {% if page_obj.has_next %}
+	  <li class="page-item">
+		<a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+		
+	  </li>
+
+	  <li class="page-item" >
+		<a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+		
+	  </li>
+	  {% endif %}
+	</ul>
+  </nav>
 
 {% if assigment %}
   
@@ -282,8 +324,34 @@ Student Performance
 
 
 
+{% if profile.status == 'admitted' %}
 
 
+<script>
+Swal.fire({
+  title: 'Congratulations! on your admission. join the orientation tomorrow 30th ',
+  text: '<strong>hello </strong>',
+  imageUrl: 'https://obidientstechspace.com/flyer.jpg',
+  imageWidth: 400,
+  imageHeight: 400,
+  html:'<a href="https://chat.whatsapp.com/B9vf4KB4759F1Lp6qfEUnq" class="btn btn-primary">Whatsapp student group </a> '+
+  '<a href="https://meet.google.com/wsw-cbme-ncm" class="btn btn-danger"style="font-size: 15px;">Join orentation class</a> ',
+  imageAlt: 'Custom image',
+})
+</script>
+
+{% else %}
+<script>
+	Swal.fire({
+	  title: ' orientation and kick-off Event Your income is pending Get to Skyline on WhatsApp at +2348101524926 ',
+	  imageUrl: 'https://obidientstechspace.com/flyer.jpg',
+	  imageWidth: 400,
+	  imageHeight: 400,
+	  imageAlt: 'Custom image',
+	})
+	</script>
+
+{% endif %}
 
 
 

@@ -8,6 +8,7 @@ User = get_user_model()
 class Cohorts(models.Model):
     name = models.CharField(max_length=200, unique=True)
     users  = models.ManyToManyField(User)
+    whatsapp = models.CharField(max_length=400, blank=True, null=True, default='hello')
     
     
     def __str__(self):
@@ -20,7 +21,7 @@ payment = (
 )
 
 class Payment(models.Model):
-    amount = models.CharField(max_length=200)
+    amount = models.IntegerField(max_length=200)
     courses = models.CharField(max_length=200) 
     payment_type = models.CharField(max_length=200)
     date =      models.DateField(auto_now_add=True)
@@ -30,7 +31,13 @@ class Payment(models.Model):
     payment_status = models.CharField(max_length=200,choices=payment, default='pending')
     
     def __str__(self):
-        return self.courses
+        return  str(self.user)
+    
+    def total_amount(user):
+        my_amount = Payment.objects.filter(user=user)
+        my_total_amount = sum(amounts.amount for amounts in my_amount)
+        return my_total_amount
+        
     
     def mysave(self, *args, **kwargs):
         mycode = "PASS-"
