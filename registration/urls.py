@@ -5,7 +5,7 @@ from .views import Registration, uservalidation,phonevalidation,emailvalidation,
 
 urlpatterns = [
    path('', Registration.as_view(), name="register"),
-   path('usernamevalide',uservalidation, name='usernamevalid' ),
+   path('usernamevalide',uservalidation, name='Usernamevalidation' ),
    path('phonevalide',phonevalidation, name='phonevalid' ),
    path('emailvalide',emailvalidation, name='emailvalid' ),
    # path('passwordvalide',emailvalidation, name='passwordvalid' ),

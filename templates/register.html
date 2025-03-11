@@ -29,20 +29,19 @@
                     <div class="container message  ">
                     
                     <div class="form"> 
-                    <form action=" " id="formid" method="post" autocomplete="off">
+                    <form action=" " id="registration-form" method="post" autocomplete="off">
                       {% csrf_token %}
                       <h1>Create Account</h1>
                         <div class="card-text">
                             <label for="" class="form-label">Email Address:</label>
-                            <input type="email"  name="email" class="form-control" id="email" placeholder="Enter Emaill here " required/>
+                            <input type="email"  name="email" class="form-control" style="padding-left: 50px;" id="email" placeholder="Enter Emaill here " required/>
                             <div class="icon"><i class="fa-regular fa-envelope"></i></div>
-
                         </div>
 
 
                         <div class="card-text">
                             <label for="" class="form-label">Whatsapp Number:</label>
-                            <input type="tel" minlength="10" maxlength="11"  name="phone" id="phone" class="form-control" placeholder="Enter Whatsapp No " required/>
+                            <input type="tel" minlength="10" maxlength="11" style="padding-left: 50px;" name="phone" id="phone" class="form-control" placeholder="Enter Whatsapp No " required/>
                             <div class="whatsapp"><i class="fa-brands fa-whatsapp"></i></div>
 
                         </div>
@@ -50,39 +49,39 @@
 
                         <div class="card-text">
                           <label for="" class="form-label">Username:</label>
-                          <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username " required/>
+                          <input type="text" name="username" style="padding-left: 50px;" id="username" style="padding-left: 50px;" class="form-control" placeholder="Enter Username " required/>
                           <div class="user"><i class="fa-solid fa-user-lock"></i></div>
-
-                      </div>
+                        </div>
 
                         <div class="card-text">
                           <label for="" class="form-label">Enter Password:</label>
-                          <input type="password" name="password" id="password" class="form-control" placeholder="password " required/>
-                          <div class="whatsapp"><i class="fa-brands fa-whatsapp"></i></div>
+                          <div class="" style="position: relative;">
+                            <input type="password" name="password" style="padding-left: 50px;" id="password" class="form-control" placeholder="password " required/>
+                            <div class="icon"><i class="fa-solid fa-lock" style="position: absolute; top: 0px; left: 0px;"></i></div>
+                          </div>
+                        </div>
 
-                      </div>
 
+                        <div class="card-text">
+                          <label for="" class="form-label">Confirm Password:</label>
+                          <div style="position: relative;">
+                            <input type="password" name="password2" style="padding-left: 50px;" id="password2" class="form-control" placeholder="password " required/>
+                            <div class="icon"><i class="fa-solid fa-lock" style="position: absolute; top: 0px; left: 0px;"></i></div>
+                          </div>
 
-                      <div class="card-text">
-                        <label for="" class="form-label">Comfirm Password:</label>
-                        <input type="password" name="password2" id="password2" class="form-control" placeholder="password " required/>
-                        <div class="whatsapp"><i class="fa-brands fa-whatsapp"></i></div>
-
-                    </div>
+                        </div>
 
 
                       
 
                         <div class="btn d-grid mt-3">
-                          <input type="submit" value="Proceed" class="btn btn-primary  ">
+                          <button type="submit" value="Proceed" class="btn btn-primary  ">
+                            Proceed
                           <div class="icon-btn">
                             <i class="fa-solid fa-forward"></i>
                           </div>
+                          </button>
                         </div>
-                      
-                       
-
-
                     </form>
 
                   </div>
@@ -99,215 +98,68 @@
   </body>
 
   <script>
-
-    $(document).ready(function(){
-      $('#username').change(function(){
-        const username = $('#username').val();
-        $.ajax({
-  
-          url: "{% url 'usernamevalid' %}",
-          data: {
-            'username':  username
-          },
-  
-          dataType: 'json',
-  
-          success: function(data){
-  
-            if (data.is_taken){
-              swal("sorry!", "username already Registered!", "error");
-            }
-  
-}
-  
-  
-  
+    $(document).ready(function() {
+        // Username validation
+        $('#username').change(function() {
+            $.ajax({
+                url: "{% url 'Usernamevalidation' %}",
+                data: { 'username': $('#username').val() },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.is_taken) {
+                        swal("Error", "Username already registered!", "error");
+                    }
+                }
+            });
         });
-    
-    
-      });
-    
-    
-     });
-    
 
-
-
-     $(document).ready(function(){
-      $('#phone').change(function(){
-        const phone = $('#phone').val();
-        $.ajax({
-  
-          url: "{% url 'phonevalid' %}",
-          data: {
-            'phone':  phone
-          },
-  
-          dataType: 'json',
-  
-          success: function(data){
-  
-            if (data.is_taken){
-              swal("sorry!", "phone number already Registered!", "error");
-            }
-  
-}
-  
-  
-  
+        // Phone validation
+        $('#phone').change(function() {
+            $.ajax({
+                url: "{% url 'phonevalid' %}",
+                data: { 'phone': $('#phone').val() },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.is_taken) {
+                        swal("Error", "Phone number already registered!", "error");
+                    }
+                }
+            });
         });
-    
-    
-      });
-    
-    
-     });
-    
 
-     $(document).ready(function(){
-      $('#email').change(function(){
-        const email = $('#email').val();
-        $.ajax({
-  
-          url: "{% url 'emailvalid' %}",
-          data: {
-            'email':  email
-          },
-  
-          dataType: 'json',
-  
-          success: function(data){
-  
-            if (data.is_taken){
-              swal("sorry!", "Email Address already Registered!", "error");
-            }
-  
-}
-  
-  
-  
+        // Email validation
+        $('#email').change(function() {
+            $.ajax({
+                url: "{% url 'emailvalid' %}",
+                data: { 'email': $('#email').val() },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.is_taken) {
+                        swal("Error", "Email already registered!", "error");
+                    }
+                }
+            });
         });
-    
-    
-      });
-    
-    
-     });
-    
 
+        // Form submission via AJAX
+        $("#registration-form").submit(function(e) {
+            e.preventDefault();
 
-
-     
-   
-
-  
-
-
-
- const  form = document.getElementById('formid');
- const  myalert = document.getElementById('alert');
- const email = document.getElementById('email')
- const phone = document.getElementById('phone')
- const username = document.getElementById('username')
- const password = document.getElementById('password')
- const  password2 = document.getElementById('password2')
- const csrf    =  document.getElementsByName('csrfmiddlewaretoken')
-
-
-const url =  ""
-const alerthandle = (type, text) =>{
-  myalert.innerHTML =`<div class="alert alert-${type}" role="alert">
-   ${text}
-  </div>`
-
-
-}
-
-
-
-
-form.addEventListener('submit',(e) => {
-  e.preventDefault();
-
-  
-
-  const fb = new  FormData()
-  fb.append('csrfmiddlewaretoken', csrf[0].value)
-  fb.append('phone', phone.value)
-  fb.append("email", email.value)
-  fb.append('username', username.value)
-  fb.append('password', password.value)
-  fb.append('password2', password2.value)
-
-
-  $.ajax({
-
-    type: "POST",
-    url:  url, 
-    data:  fb,
-    processData: false,
-    contentType: false,
-    cache: false,
-    success: function(data){
-      swal("Account created Sucessfully", "Redirecting to profile!", "success");
-      if(data){
-        setTimeout(function(){
-          window.location = "{% url 'dash' %}" 
-
-        },5000)
-      
-        
-       
-
-      }
-
-
-      
-    },
-
-    error:function(error){
- 
-      alerthandle('danger', "something want wrong")
-      
-
-      
-    }, 
-    
-});
- });
-
-
- 
-
-
-  
-  /*
-$(document).on('submit','#formid', function(e){
-  e.preventDefault();
-  $.ajax({
-    type: 'POST',
-    url:   "{% url 'register' %}", 
-
-    data:{
-      username: $('#username').val(),
-      email: $('#email').val(),
-      phone: $('#phone').val(),
-      password: $('#password').val(),
-      password2: $('#password2').val(),
-      csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-
-    },
-  
-    
-    
-
-
-  })
-})
-  */
-
-
-
-  </script>
+            $.ajax({
+                type: "POST",
+                url: "{% url 'register' %}",
+                data: $(this).serialize(),
+                headers: { "X-CSRFToken": $("input[name=csrfmiddlewaretoken]").val() },
+                success: function(response) {
+                    swal("Success", "Account created successfully!", "success")
+                        .then(() => window.location.href = "/login");
+                },
+                error: function(xhr) {
+                    swal("Error", xhr.responseJSON.message || "Something went wrong", "error");
+                }
+            });
+        });
+    });
+</script>
 
 </html>

@@ -5,8 +5,7 @@ from dash.views import myapproved
 
 
 urlpatterns = [
-    
-   
+
     path('',Projects.as_view(), name='projects'),
     path('project/<int:pk>', Projects_datials.as_view(),name='project_datials'),
     path("pending_payment/",Payment_approval.as_view(), name="payment_approval" ),
@@ -21,9 +20,4 @@ urlpatterns = [
     path('task_approved/<int:pk>',approved_task, name='task_appro' ),
     path("rejected_payment/",Payment_jected.as_view(), name="payment_rejected" ),
     path("rating/",RatingScore.as_view(), name="reating" ),
-    
-    
-    
-    
-    
 ]
