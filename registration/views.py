@@ -62,8 +62,8 @@ def phonevalidation(request):
     if not phone:  # Handle missing or empty phone number
         return JsonResponse({'error': 'Phone number parameter is required'}, status=400)
 
-    if not re.fullmatch(r'^\+?\d{7,15}$', phone):  # Validate phone format
-        return JsonResponse({'error': 'Invalid phone number format'}, status=400)
+    # if not re.fullmatch(r'^\+?\d{7,15}$', phone):  # Validate phone format
+    #     return JsonResponse({'error': 'Invalid phone number format'}, status=400)
 
     is_taken = User.objects.filter(phone=phone).exists()
 
