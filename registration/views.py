@@ -23,7 +23,7 @@ User = get_user_model()
         #pick the username from the data
         # username = data['username']
         # if not str(username).isalnum():
-        #     return JsonResponse({'username_error': 'username should only contain alphameric charater'})
+        #     return JsonResponse({'username_error': 'username should only contain alphameric character'})
         # return JsonResponse({'username_valid': 'yes'})
 
 
@@ -130,10 +130,10 @@ def phonevalidation(request):
 #         email = request.POST['email']
 #         phone = request.POST['phone']
 #         password = request.POST['password']
-#         comfirm_password = request.POST['password2']
+#         confirm_password = request.POST['password2']
 #         username = request.POST['username']
         
-#         if password !=comfirm_password:
+#         if password !=confirm_password:
 #             messages.error(request, "Password Not the same")
 #             return  render(request, 'register.html')
 #         if len(password)  < 5:
