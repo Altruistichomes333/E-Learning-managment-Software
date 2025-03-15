@@ -245,7 +245,7 @@ class Registration(View):
 # Updated Login Code by:Da'Guy
 class Login(View):
     def get(self, request):
-        return render(request, 'registration/login.html')
+        return render(request, 'registration/loginDaGuy.html')
 
     def post(self, request):
         phone = request.POST['phone']
