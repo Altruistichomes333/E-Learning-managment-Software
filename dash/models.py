@@ -14,13 +14,14 @@ class Cohorts(models.Model):
     def __str__(self):
         return self.name
 
-payment = (
+
+
+class Payment(models.Model):
+    payment = (
     ('pending', "pending"),
     ('approved', "approved"),
     ('reject', "reject"),
-)
-
-class Payment(models.Model):
+    )
     amount = models.IntegerField(max_length=200)
     courses = models.CharField(max_length=200) 
     payment_type = models.CharField(max_length=200)
@@ -46,23 +47,8 @@ class Payment(models.Model):
             
             
         super().save(*args, **kwargs)
-            
-            
         
-    
-    
-    
-    
-
 
 class Mypasscode(models.Model):
     passcodeNo = models.CharField(max_length=200, unique=True) 
     student = models.ForeignKey(User,on_delete=models.CASCADE)   
-
-
-
-      
-    
-
-    
-    
