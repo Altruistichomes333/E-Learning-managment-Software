@@ -257,9 +257,10 @@ class Login(View):
         user = auth.authenticate(phone=phone, password=password)
         if user:
             auth.login(request, user)
-            return JsonResponse({'status': 1, 'message': "Login successful"}, status=200)
+            # return JsonResponse({"redirect_url": "/dashboard/"})
+            return redirect('dash')
 
-        return JsonResponse({'status': 0, 'message': "Incorrect password"}, status=400)
+        return redirect("login")
 
 
 class Logout(View):
