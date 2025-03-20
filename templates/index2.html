@@ -1,222 +1,332 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-  <head>
-   
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
- 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/fbfe7ccd16.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'style/form.css' %}">
-   
-    <title>Update Profile </title>
-  </head>
-  <body>
+    <title>Update Profile - Obidient Tech Space</title>
+    <style>
+        body {
+            background-color: #00796b; /* Consistent background color */
+            color: #ffffff; /* White text for contrast */
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+        .form-step {
+            display: none; /* Hide all steps by default */
+        }
+        .form-step.active {
+            display: block; /* Show the active step */
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        .step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #b2dfdb;
+            color: #00796b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        .step.active {
+            background-color: #00796b;
+            color: #ffffff;
+        }
+        .btn-custom {
+            background-color: #00796b;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        .btn-custom:hover {
+            background-color: #004d40;
+        }
+        .input-group-text {
+            background-color: #00796b;
+            color: #ffffff;
+            border: none;
+        }
+        .form-label{
+          color: #00796b;
+          font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-container">
+                    <h3 class="text-center mb-4" style="color: #00796b;">Complete Your Application</h3>
+                    <div class="step-indicator">
+                        <div class="step active">1</div>
+                        <div class="step">2</div>
+                        <div class="step">3</div>
+                    </div>
 
-    <div class="container-fluid">
-      
-        
-        
-        
-            <h3 class="mx-5 mt-5 h1 ">Complete your application your are few step ahead </h3>
-           
-                
+                    <!-- Step 1: Personal Information -->
+                    <div class="form-step active" id="step1">
+                        <form action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <!-- Sponsor Code -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="sponsor-code" class="form-label">Sponsor Code (Optional)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
+                                        <input type="text" class="form-control" id="sponsors" name="sponsors" placeholder="Enter Sponsor Code">
+                                    </div>
+                                </div>
 
-  
+                                <!-- First Name -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="first-name" class="form-label">First Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter First Name" required>
+                                    </div>
+                                </div>
 
-    {% include  'message.html' %}
-    <form action="" method="post" enctype="multipart/form-data" >
-      {% csrf_token %}
-      <div class="row mt-5">
-        <div class="col-md-6">
-          <label for="#" class="form-lable">sponsors code(Optional)</label>
-          <input type="text" class="form-control"  name="sponsors" placeholder="Enter sponsors code:" />
+                                <!-- Last Name -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="last-name" class="form-label">Last Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        <input type="text" class="form-control" id="last-name" name="last_name" placeholder="Enter Last Name" required>
+                                    </div>
+                                </div>
 
+                                <!-- State -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="state" class="form-label">State</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                        <input type="text" class="form-control" id="state" name="state" placeholder="State" required>
+                                    </div>
+                                </div>
+
+                                <!-- City -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="city" class="form-label">City</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-city"></i></span>
+                                        <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+                                    </div>
+                                </div>
+
+                                <!-- Local Government -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="local-govt" class="form-label">Local Govt</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-map-pin"></i></span>
+                                        <input type="text" class="form-control" id="local-govt" name="local_govt" placeholder="L.G.A" required>
+                                    </div>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="col-md-12 mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" disabled readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center mt-4">
+                                <button type="button" class="btn btn-custom" onclick="nextStep(2)">Next</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Step 2: Contact and Course Details -->
+                    <div class="form-step" id="step2">
+                        <div class="row">
+                            <!-- WhatsApp Number -->
+                            <div class="col-md-6 mb-3">
+                                <label for="whatsapp" class="form-label">WhatsApp Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fab fa-whatsapp"></i></span>
+                                    <input type="tel" class="form-control" 
+                                    value="{{user.phone}}"
+                                    disabled
+                                    readonly
+                                    id="whatsapp" name="whatsapp" placeholder="Enter WhatsApp Number">
+                                </div>
+                            </div>
+
+                            <!-- Username -->
+                            <div class="col-md-6 mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" disabled readonly>
+                                </div>
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div class="col-md-6 mb-3">
+                                <label for="phone-number" class="form-label">Phone Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    <input type="tel" class="form-control" id="phone-number" name="phone_number" placeholder="Enter Phone Number" required>
+                                </div>
+                            </div>
+
+                            <!-- Contact Address -->
+                            <div class="col-md-6 mb-3">
+                                <label for="contact" class="form-label">Contact Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-home"></i></span>
+                                    <input type="text" class="form-control" id="contact" name="contact" placeholder="Enter Contact Address" required>
+                                </div>
+                            </div>
+
+                            <!-- Preferred Course -->
+                            <div class="col-md-6 mb-3">
+                                <label for="course" class="form-label">Preferred Course</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-graduation-cap"></i></span>
+                                    <select class="form-select" id="course" name="course" required>
+                                        <option selected disabled>Choose Training Course</option>
+                                        <option value="Front-End Development">Front-End Development</option>
+                                        <option value="Back-End Development">Back-End Development</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Laptop Availability -->
+                            <div class="col-md-6 mb-3">
+                                <label for="laptop" class="form-label">Do You Already Have a Laptop?</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-laptop"></i></span>
+                                    <select class="form-select" id="laptop" name="laptop" required>
+                                        <option selected disabled>Do you have laptop?</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <button type="button" class="btn btn-custom" onclick="prevStep(1)">Previous</button>
+                            <button type="button" class="btn btn-custom" onclick="nextStep(3)">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Social Media and Picture Upload -->
+                    <div class="form-step" id="step3">
+                        <div class="row">
+                            <!-- Certificate -->
+                            <div class="col-md-6 mb-3">
+                                <label for="certificate" class="form-label">Certificate</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-certificate"></i></span>
+                                    <select class="form-select" id="certificate" name="certificate" required>
+                                        <option selected disabled>Choose Choice</option>
+                                        <option value="Diploma(Front-End)">Diploma (Front-End)</option>
+                                        <option value="Advanced(Full Stack)">Advanced (Full Stack)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Training Location -->
+                            <div class="col-md-6 mb-3">
+                                <label for="training-location" class="form-label">Training Location</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                    <select class="form-select" id="training-location" name="training_location" required>
+                                        <option selected disabled>Choose Choice</option>
+                                        <option value="Remote Training">Remote Training</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Occupation -->
+                            <div class="col-md-6 mb-3">
+                                <label for="occupation" class="form-label">Occupation</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-briefcase"></i></span>
+                                    <input type="text" class="form-control" id="occupation" name="occupation" placeholder="Enter Occupation" required>
+                                </div>
+                            </div>
+
+                            <!-- Social Media Platform -->
+                            <div class="col-md-6 mb-3">
+                                <label for="social-media" class="form-label">Social Media Platform</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-share-alt"></i></span>
+                                    <select class="form-select" id="social-media" name="social_media" required>
+                                        <option selected disabled>Preferred Social Media Platform</option>
+                                        <option value="Facebook">Facebook</option>
+                                        <option value="Twitter">Twitter</option>
+                                        <option value="Instagram">Instagram</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Social Media Profile Link -->
+                            <div class="col-md-6 mb-3">
+                                <label for="profile-link" class="form-label">Social Media Profile Link</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-link"></i></span>
+                                    <input type="url" class="form-control" id="link" name="link" placeholder="Copy and Paste Profile Link Here" required>
+                                </div>
+                            </div>
+
+                            <!-- Upload Picture -->
+                            <div class="col-md-6 mb-3">
+                                <label for="profile-picture" class="form-label text-danger">Upload Your Picture</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-camera"></i></span>
+                                    <input type="file" class="form-control" id="file" name="file" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <button type="button" class="btn btn-custom" onclick="prevStep(2)">Previous</button>
+                            <input type="submit" value="Submit" class="btn btn-custom">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-          <label for="#" class="form-lable">First Name</label>
-          <input type="text" class="form-control" name="first_name" placeholder="Enter First name" required/>
-
-        </div>
-        <div class="col-md-6">
-          <label for="#" class="form-lable">Last Name</label>
-          <input type="text" class="form-control"  name="last_name" placeholder="Enter Last Name" required/>
-
-        </div>
-
-      
-
-
-        <div class="col-md-4 mt-3 ">
-          <label for="#" class="form-lable">State</label>
-          <input type="text" class="form-control" name="state" placeholder="State" required/>
-
-        </div>
-
-        <div class="col-md-4 mt-3">
-          <label for="#" class="form-lable">City</label>
-          <input type="text" class="form-control" name="city" placeholder="City" required/>
-
-        </div>
-
-        <div class="col-md-3 mt-3">
-          <label for="#" class="form-lable">Local Govt</label>
-          <input type="text" class="form-control" name="local_govt" placeholder="L.G.A" required/>
-
-        </div>
-
-
-
-        <div class="col-md-6 mt-3">
-          <label for="#" class="form-lable">Email </label>
-       <input type="text" class="form-control" value="{{user.email}}" disabled readonly>
-        </div>
-
-
-        
-        <div class="col-md-6 mt-3">
-          <label for="#" class="form-lable">WhatSapp No:</label>
-          <input type="text" class="form-control" value="{{user.phone}}" disabled readonly>
-
-        </div>
-
-
-        <div class="col-md-6 mt-3">
-          <label for="#" class="form-lable">Username:</label>
-          <input type="text" class="form-control" value="{{user.username}}" disabled readonly>
-
-        </div>
-
-
-
-
-        <div class="col-md-6 mt-3">
-          <label for="#" class="form-lable">Phone NO:</label>
-         <input type="phone" class="form-control" name="phone_number" placeholder="Enter  phone" required/>
-
-        </div>
-
-
-        <div class="col-md-6 mt-3">
-          <label for="#" class="form-lable">Contact Address:</label>
-         <input type="text" class="form-control" name="contact" placeholder="Enter Contact" required/>
-
-        </div>
-
-
-        <div class="col-md-6 mt-3">
-          <label for="#" class="form-lable">Perfered Course:</label>
-         <select name="course" id="" class="form-select" required/>
-          <option selected>choose Training Course</option>
-          <option value="Front-End Development">Front-End Development</option>
-          <option value="Full-Stack Development">Full Stack Development</option>
-         </select>
-
-        </div>
-
-
-        <div class="col-md-6 mt-3">
-          <label for="#" class="form-lable">DO YOU ALREADY HAVE A LAPTOP COMPUTER?:</label>
-         <select name="laptop" id="" class="form-select" required/>
-          <option selected>choose Choice</option>
-          <option value="Yes">Yes</option>
-          <option value="NO">NO</option>
-         </select>
-        </div>
-    
-
-
-
-         <div class="col-md-6 mt-3">
-          <label for="#" class="form-lable">CERTIFICATE:</label>
-         <select name="certificate" id="" class="form-select" required/>
-          <option selected>choose Choice</option>
-          <option value="Diploma(Front-end)">Diploma(Front-end)</option>
-          <option value="Advanced(Full Stack)">Advanced(Full Stack)</option>
-         </select>
-
-        </div>
-
-
-
-        <div class="col-md-6 mt-3">
-          <label for="#" class="form-lable">TRAINING LOCATION:</label>
-         <select name="training_location" id="" class="form-select" required/>
-          <option selected>choose Choice</option>
-          <option value="Online">Remote Training</option>
-     
-         </select>
-
-        </div>
-
-
-        <div class="col-md-6 mt-3">
-          <label for="#" class="form-lable">Occupation:</label>
-          <input type="text" class="form-control" name="occupation" placeholder="Enter OCCUPATION" required/>
-
-
-        </div>
-
-
-        <div class="col-md-6 mt-3">
-          <label for="#" class="form-lable">Social Media Platform:</label>
-         <select name="social_media" id="" class="form-select" required/>
-          <option selected>Prefered Social Media Platform</option>
-          <option value="facebook">Facebook</option>
-          <option value="twitter">Twitter</option>
-          <option value="instagram">Instagram</option>
-     
-         </select>
-
-        </div>
-
-
-        <div class="col-md-6 mt-3">
-          <label for="#" class="form-lable">Social Media Profile Link</label>
-          <input type="url" class="form-control" name="link"placeholder="Copy and paste Prefered Profile Link Here"required/>
-
-
-        </div>
-
-
-        <div class="col-md-6 mt-3">
-          <label for="#" class="form-lable" style="color: red;"> Upload your Picture:</label>
-          <input type="file" class="form-control" name="file"  required/>
-
-
-        </div>
-
-<div class="d-grid col-md-8 mx-auto mt-2" >
-  <input type="submit" value="Proceed" class="btn btn-success">
-
-</div>
-
-        
-   
-
-
-    </form>
-
-
- 
-          
-           
-      
-
-
-            
-
-
-     
     </div>
- 
 
-   
+    <script>
+        // Function to handle step navigation
+        function nextStep(step) {
+            document.querySelectorAll('.form-step').forEach((el) => el.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+            document.querySelectorAll('.step').forEach((el, index) => {
+                el.classList.toggle('active', index + 1 === step);
+            });
+        }
+
+        function prevStep(step) {
+            document.querySelectorAll('.form-step').forEach((el) => el.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+            document.querySelectorAll('.step').forEach((el, index) => {
+                el.classList.toggle('active', index + 1 === step);
+            });
+        }
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-
-    
-  
-  </body>
+</body>
 </html>
