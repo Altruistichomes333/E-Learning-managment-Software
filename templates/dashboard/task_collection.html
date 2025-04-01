@@ -431,7 +431,7 @@
                 submitText.textContent = 'Submitting...';
                 
                 $Ajax({
-                    url: form.action,
+                    url: {% url 'task_collwction' %},
                     method: form.method,
                     data: new FormData(form),
                     processData: false,
