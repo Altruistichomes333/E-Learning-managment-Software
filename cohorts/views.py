@@ -224,7 +224,7 @@ class Social_Profile(View):
         youtube  = request.POST['youtube']
         profile_socila = Social.objects.create(facebook=facebook,twitter=twitter,git_hub=github,youtube=youtube,user=request.user)
         profile_socila.save()
-        messages.success(request,'Profile Update Sucessfully')
+        messages.success(request,'Profile Update Successfully')
         return render(request, 'dashboard/social_profile.html')
     
     

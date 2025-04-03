@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Project, Assigment
+from .models import Project, Assigment, Task
 from dash.models import Payment,Cohorts
 from django.contrib import messages
+from django.contrib.auth.models import User
 from userprofile.models import Profiles
 from .form import bodyform
 from .models import Task_collections
@@ -188,6 +189,28 @@ class Submitassigment(View):
         
         # return render(request, 'dashboard/assigmentsubmision.html', {})
    
+
+class CreateTask(View):
+    def get(self, request):
+        return render(request, 'dashboard/create_task.html')
+    def post(self, request):
+
+        task = request.POST['task']
+        task_img = request.POST['task_img']
+        links = request.POST['links']
+        task_description = request.POST['task_description']
+
+        if Task.objects.filter(task=task).exists():
+            messages.error(request, "multiple creation of the same Task are not permitted ")
+            return render(request, 'dashboard/create_task.html')
+        task = Task.objects.create(task,task_img,links,task_description)
+        task.save()
+        messages.success(request, "task submitted successfully")
+
+        return render(request, 'dashboard/create_task.html')
+
+    
+  
   
 class Assigment_approval(View):
     def get(self,request):
