@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         :root {
             --primary-color: #00796b;
@@ -226,11 +227,11 @@
                     <p class="text-muted">Complete all 7 tasks to unlock your dashboard</p>
                     <div class="d-flex justify-content-center align-items-center">
                         <div class="me-3">
-                            <span class="badge bg-danger rounded-pill p-2">{{ task_collection.count }}</span>
+                            <span class="badge bg-danger rounded-pill p-2" id="tasksSubmitted">{{ task_collection.count }}</span>
                             <span class="ms-2">tasks submitted</span>
                         </div>
                         <div>
-                            <span class="badge bg-success rounded-pill p-2">{{ 7|sub:task_collection.count }}</span>
+                            <span class="badge bg-success rounded-pill p-2" id="tasksRemaining">{{ 7|sub:task_collection.count }}</span>
                             <span class="ms-2">tasks remaining</span>
                         </div>
                     </div>
@@ -240,7 +241,7 @@
                         <div class="card p-4 animate__animated animate__fadeInUp">
                             <div class="card-body">
                                 {% include 'dashboard/mymessage.html' %}
-                                <form action="#" method="post" enctype="multipart/form-data" id="taskForm">
+                                <form id="taskForm" method="POST" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <div class="mb-4">
                                         <label class="form-label fw-bold">Select Task</label>
@@ -327,135 +328,149 @@
     {% endblock content %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Drag and drop functionality
+        <script>
         const dropArea = document.getElementById('dropArea');
         const fileInput = document.getElementById('fileInput');
         const previewImage = document.getElementById('previewImage');
         const progressContainer = document.getElementById('uploadProgress');
         const progressBar = document.getElementById('progressBar');
-        
-        // Prevent default drag behaviors
+        const form = document.getElementById('taskForm');
+
+        // Drag and drop functionality
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropArea.addEventListener(eventName, preventDefaults, false);
             document.body.addEventListener(eventName, preventDefaults, false);
         });
-        
-        // Highlight drop area when item is dragged over it
+
+        // Highlight drop area
         ['dragenter', 'dragover'].forEach(eventName => {
             dropArea.addEventListener(eventName, highlight, false);
         });
-        
         ['dragleave', 'drop'].forEach(eventName => {
             dropArea.addEventListener(eventName, unhighlight, false);
         });
-        
-        // Handle dropped files
+
         dropArea.addEventListener('drop', handleDrop, false);
-        
-        // Click to select files
-        dropArea.addEventListener('click', () => {
-            fileInput.click();
-        });
-        
-        // Handle file selection
+        dropArea.addEventListener('click', () => fileInput.click());
         fileInput.addEventListener('change', function() {
             handleFiles(this.files);
         });
-        
+
         function preventDefaults(e) {
             e.preventDefault();
             e.stopPropagation();
         }
-        
+
         function highlight() {
             dropArea.classList.add('active');
         }
-        
+
         function unhighlight() {
             dropArea.classList.remove('active');
         }
-        
+
         function handleDrop(e) {
             const dt = e.dataTransfer;
             const files = dt.files;
             handleFiles(files);
         }
-        
+
         function handleFiles(files) {
             if (files.length > 0) {
                 const file = files[0];
-                
-                // Display preview if it's an image
                 if (file.type.startsWith('image/')) {
                     const reader = new FileReader();
-                    
                     reader.onload = function(e) {
                         previewImage.src = e.target.result;
                         previewImage.style.display = 'block';
-                    }
-                    
+                    };
                     reader.readAsDataURL(file);
+
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    fileInput.files = dataTransfer.files;
+
+                    progressContainer.style.display = 'block';
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += 10;
+                        progressBar.style.width = progress + '%';
+                        if (progress >= 100) {
+                            clearInterval(interval);
+                            setTimeout(() => {
+                                progressContainer.style.display = 'none';
+                            }, 500);
+                        }
+                    }, 100);
+                } else {
+                    alert("Please upload a valid image file.");
                 }
-                
-                // Update file input
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(file);
-                fileInput.files = dataTransfer.files;
-                
-                // Show upload progress (simulated)
-                progressContainer.style.display = 'block';
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += 10;
-                    progressBar.style.width = progress + '%';
-                    
-                    if (progress >= 100) {
-                        clearInterval(interval);
-                        setTimeout(() => {
-                            progressContainer.style.display = 'none';
-                        }, 500);
-                    }
-                }, 100);
             }
         }
-        
-        // Form submission animation
-        const form = document.getElementById('taskForm');
+
         if (form) {
             form.addEventListener('submit', function(e) {
                 const spinner = document.getElementById('spinner');
                 const submitText = document.querySelector('.submit-text');
-                
                 spinner.classList.remove('d-none');
                 submitText.textContent = 'Submitting...';
-                
-                $Ajax({
-                    url: {% url 'task_collwction' %},
+
+                e.preventDefault(); // Prevent default form submission
+
+                $.ajax({
+                    url: "{% url 'task_collwction' %}",
                     method: form.method,
                     data: new FormData(form),
                     processData: false,
                     contentType: false,
+                    headers: {
+                        'X-CSRFToken': "{{ csrf_token }}"
+                    },
                     success: function(response) {
+                    spinner.classList.add('d-none');
+                    submitText.textContent = 'Submit';
+
+                    // Update the task count UI
+                    const submittedElem = document.getElementById('tasksSubmitted');
+                    const remainingElem = document.getElementById('tasksRemaining');
+
+                    let submitted = parseInt(submittedElem.textContent);
+                    let remaining = parseInt(remainingElem.textContent);
+
+                    if (submitted < 7) {
+                        submitted += 1;
+                        remaining = Math.max(0, 7 - submitted);
+
+                        submittedElem.textContent = submitted;
+                        remainingElem.textContent = remaining;
+                    }
+
+                    // Trigger confetti if all tasks are completed
+                    if (submitted === 7) {
+                        createConfetti()
+                        // Optional: Refresh or replace content after all tasks done
+                        setTimeout(() => {
+                            location.reload(); // Reload the page to show the dashboard
+                        }, 3000); // Adjust time as needed
+                    }
+
+                    // Optionally reset form
+                    form.reset();
+                    previewImage.style.display = 'none';
+                },
+
+                    error: function(xhr, status, error) {
+                        alert("There was an error submitting the form. Please try again.");
                         spinner.classList.add('d-none');
                         submitText.textContent = 'Submit';
                     }
-                })
-
-
-                // Simulate processing delay
-                setTimeout(() => {
-                    // Create confetti effect
-                    createConfetti();
-                }, 1500);
+                });
             });
         }
-        
-        // Create confetti effect
+
         function createConfetti() {
             if (document.getElementById('confettiContainer')) {
                 document.getElementById('confettiContainer').style.display = 'block';
-                
                 for (let i = 0; i < 100; i++) {
                     setTimeout(() => {
                         const confetti = document.createElement('div');
@@ -465,26 +480,13 @@
                         confetti.style.width = Math.random() * 10 + 5 + 'px';
                         confetti.style.height = Math.random() * 10 + 5 + 'px';
                         document.body.appendChild(confetti);
-                        
-                        // Remove confetti after animation
+
                         setTimeout(() => {
                             confetti.remove();
                         }, 5000);
                     }, i * 20);
                 }
             }
-        }
-        
-        // Show confetti if all tasks are complete
-        if (document.getElementById('confettiContainer') && document.getElementById('confettiContainer').style.display !== 'block') {
-            setTimeout(() => {
-                createConfetti();
-            }, 1000);
-        }
-        
-        // Custom filter for template (subtraction)
-        function sub(value, arg) {
-            return value - arg;
         }
     </script>
 </body>

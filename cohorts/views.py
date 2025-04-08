@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from userprofile .models import Profiles,Social
 import pdb
+from django.http import JsonResponse
 from projects .models import Assigment, Project
 
 
@@ -180,17 +181,27 @@ class Taskscollection(LoginRequiredMixin,View):
             
         }
         return render(request, 'dashboard/task_collection.html',context=context)
+    
+    from django.http import JsonResponse
+
         
     def post(self,request):
-        task_collection = request.POST['project']
-        link = request.POST['url']
-        screen_short = request.FILES.get('myfiles')
-        create_task = Task_collections.objects.create( task=task_collection,links=link,
-        screen_short=screen_short,student=request.user)
-        create_task.status = 'pending'
-        create_task.save()
-        messages.success(request, 'task submitted successfully pending verification')
-        return redirect('task_collwction')
+        try:
+            task_collection = request.POST['project']
+            link = request.POST['url']
+            screen_short = request.FILES.get('myfiles')
+            
+            create_task = Task_collections.objects.create(
+                task=task_collection,
+                links=link,
+                screen_short=screen_short,
+                student=request.user,
+                status='pending'
+            )
+            
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
         
         # return render(request, 'dashboard/task_collection.html')
 
