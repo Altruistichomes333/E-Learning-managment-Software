@@ -57,7 +57,8 @@ class Dashboard(LoginRequiredMixin, View):
 
         # Fetch Assignment, Project, and Passcode
         assigment = Payment.objects.filter(user=user).first()
-        project = Project.objects.filter(user=user).first()
+        project = Project.objects.filter(cohorts__users=user).distinct()
+        # project = Project.objects.filter(user=user).first()
         studentcode = Mypasscode.objects.filter(student=user).values_list("passcodeNo", flat=True).first()
 
         # Admitted Students & Pagination

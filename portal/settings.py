@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'emailssending',
     'materials',
     'credential',
-   
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

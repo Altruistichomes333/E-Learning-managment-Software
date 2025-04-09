@@ -171,16 +171,20 @@ class Taskscollection(LoginRequiredMixin,View):
     
     def get(self,request):
         task_collection =  Task_collections.objects.filter(student=request.user)[:4]
-        task =  Task.objects.filter(status='pending')
+        task =  Task.objects.filter(status='pending', student=request.user)
+        completed_task_count = Task_collections.objects.filter(status='complete', student=request.user).count()
         
         
         context = {
             
             'task': task,
-            'task_collection':task_collection
+            'task_collection':task_collection,
+            'completed_task_count':completed_task_count
             
         }
-        return render(request, 'dashboard/task_collection.html',context=context)
+        
+        print(completed_task_count)
+        return render(request, 'dashboard/task_collection.html', context=context)
     
     from django.http import JsonResponse
 

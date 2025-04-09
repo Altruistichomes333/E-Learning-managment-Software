@@ -1,16 +1,20 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Project, Assigment, Task
 from dash.models import Payment,Cohorts
 from django.contrib import messages
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from userprofile.models import Profiles
 from .form import bodyform
 from .models import Task_collections
 from django.urls import reverse_lazy, reverse
 import pdb
+from .forms import TaskForm
 
+# from django.contrib.auth import get_user_model
+User = get_user_model()
 
 # Create your views here.
 
@@ -190,27 +194,34 @@ class Submitassigment(View):
         # return render(request, 'dashboard/assigmentsubmision.html', {})
    
 
-class CreateTask(View):
-    def get(self, request):
-        return render(request, 'dashboard/create_task.html')
-    def post(self, request):
 
-        task = request.POST['task']
-        task_img = request.POST['task_img']
-        links = request.POST['links']
-        task_description = request.POST['task_description']
+#Custom test for Admin or Staff
+def is_admin_or_staff(user):
+    return user.is_authenticated and (user.is_staff or user.is_admin)
 
-        if Task.objects.filter(task=task).exists():
-            messages.error(request, "multiple creation of the same Task are not permitted ")
-            return render(request, 'dashboard/create_task.html')
-        task = Task.objects.create(task,task_img,links,task_description)
-        task.save()
-        messages.success(request, "task submitted successfully")
-
-        return render(request, 'dashboard/create_task.html')
-
+#View protected by login and role check
+@login_required(login_url='/reg/login/')  # Redirects to login page if not logged in
+@user_passes_test(is_admin_or_staff, login_url='/projects/unauthorized/')  # Redirects if not admin/staff
+def create_task_for_all(request):
+    if request.method == 'POST':
+        form = TaskForm(request.POST, request.FILES)
+        if form.is_valid():
+            users = User.objects.all()
+            for user in users:
+                task_instance = form.save(commit=False)
+                task_instance.student = user
+                task_instance.save()
+            return redirect('create_task')  # Replace with your own URL name
+    else:
+        form = TaskForm()
     
-  
+    return render(request, 'dashboard/create_task.html', {'form': form})
+
+from django.shortcuts import render
+
+def unauthorized_view(request):
+    return render(request, 'dashboard/unauthorized.html')  # Create this template
+
   
 class Assigment_approval(View):
     def get(self,request):
@@ -271,7 +282,7 @@ def approved_task(request, pk):
     task_get = Task_collections.objects.get(pk=pk)
     task_get.status = 'complete'
     task_get.save()
-    messages.success(request, 'task approved Sucessfully ')
+    messages.success(request, 'task approved Successfully ')
     return redirect('task_me')
 
 

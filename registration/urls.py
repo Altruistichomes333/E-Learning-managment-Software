@@ -9,7 +9,7 @@ urlpatterns = [
    path('phonevalide',phonevalidation, name='phonevalid' ),
    path('emailvalide',emailvalidation, name='emailvalid' ),
    # path('passwordvalide',emailvalidation, name='passwordvalide' ),
-   path('login', Login.as_view(), name="login"),
+   path('login/', Login.as_view(), name="login"),
    path('logout',Logout.as_view(), name='logout' )
    
    

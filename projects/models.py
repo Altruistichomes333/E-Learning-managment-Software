@@ -4,14 +4,6 @@ from dash.models import Payment, Cohorts
 from django.contrib.auth import get_user_model
 
 
-# Create your models here.
-# title
-# start date 
-# endate 
-# header
-# description
-# courses
-
 User = get_user_model()
 
 

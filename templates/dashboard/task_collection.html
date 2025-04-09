@@ -201,6 +201,17 @@
             z-index: 1000;
             display: none;
         }
+
+        .animate__fadeOut {
+            animation: fadeOut 0.5s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+        }
     </style>
 </head>
 <body>
@@ -216,15 +227,15 @@
     </nav>
 
     {% block content %}
-    <div class="page-wrapper">
+    <div class="page-wrapper confetti-div">
         <div class="container-fluid">
-            {% if task_collection.count < 7 %}
+            {% if task_collection.count < 4 %}
                 <div class="text-center mb-4 animate__animated animate__fadeIn">
                     <h3 class="text-dark fw-bold mb-3">Task Collections</h3>
                     <div class="progress-container">
                         <div class="progress-bar" style="width:{{ task_collection.count|div:7|mul:100 }}%"></div>
                     </div>
-                    <p class="text-muted">Complete all 7 tasks to unlock your dashboard</p>
+                    <p class="text-muted">Complete 4 tasks to unlock your dashboard</p>
                     <div class="d-flex justify-content-center align-items-center">
                         <div class="me-3">
                             <span class="badge bg-danger rounded-pill p-2" id="tasksSubmitted">{{ task_collection.count }}</span>
@@ -281,6 +292,7 @@
                     </div>
                 </div>
             {% else %}
+  
                 <div class="task-complete-animation" id="confettiContainer">
                     <div class="text-center">
                         <h1 class="display-3 text-success mb-4 animate__animated animate__tada">🎉 Congratulations!</h1>
@@ -289,7 +301,7 @@
                 </div>
                 <div class="text-center animate__animated animate__fadeIn">
                     <h3 class="text-success mb-4">All Tasks Submitted Successfully!</h3>
-                    <p class="text-muted mb-5">You can now access your dashboard with all features unlocked.</p>
+                    <p class="text-muted mb-5">You can now access your dashboard with all features unlocked after approval.</p>
                 </div>
                 <div class="card mt-4 animate__animated animate__fadeInUp">
                     <div class="card-body">
@@ -319,6 +331,13 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
+                          <div class="mx-auto text-center mt-4">
+                            {% if completed_task_count == 4 %}
+                                <a href="{% url 'dash' %}" class="btn btn-primary">Back to Dashboard</a>
+                            {% else %}
+                                <a href="{% url 'task_collwction' %}" class="btn btn-primary">Refresh</a>
+                            {% endif %}
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -408,6 +427,34 @@
             }
         }
 
+        function createConfetti() {
+            const colors = ['#00bfa5', '#00796b', '#4db6ac', '#26a69a', '#b2dfdb', '#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                confetti.style.width = `${Math.random() * 8 + 4}px`;
+                confetti.style.height = confetti.style.width;
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                confetti.style.opacity = Math.random() * 0.5 + 0.5;
+                confetti.style.position = 'absolute';
+                confetti.style.top = `${Math.random() * 100}vh`;
+                confetti.style.zIndex = 9999;
+                confetti.style.pointerEvents = 'none';
+                confetti.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
+                confetti.style.transform += ` translateY(${Math.random() * 100 + 50}vh)`;
+
+
+                document.body.appendChild(confetti);
+
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000); // Confetti lifetime
+            }
+        }
+
         if (form) {
             form.addEventListener('submit', function(e) {
                 const spinner = document.getElementById('spinner');
@@ -437,7 +484,7 @@
                     let submitted = parseInt(submittedElem.textContent);
                     let remaining = parseInt(remainingElem.textContent);
 
-                    if (submitted < 7) {
+                    if (submitted < 4) {
                         submitted += 1;
                         remaining = Math.max(0, 7 - submitted);
 
@@ -446,12 +493,15 @@
                     }
 
                     // Trigger confetti if all tasks are completed
-                    if (submitted === 7) {
+                    if (submitted === 4) {
                         createConfetti()
                         // Optional: Refresh or replace content after all tasks done
                         setTimeout(() => {
-                            location.reload(); // Reload the page to show the dashboard
-                        }, 3000); // Adjust time as needed
+                        document.body.classList.add('animate__fadeOut');
+                        setTimeout(() => {
+                            location.reload();
+                        }, 500);
+                    }, 3000);
                     }
 
                     // Optionally reset form
@@ -466,27 +516,6 @@
                     }
                 });
             });
-        }
-
-        function createConfetti() {
-            if (document.getElementById('confettiContainer')) {
-                document.getElementById('confettiContainer').style.display = 'block';
-                for (let i = 0; i < 100; i++) {
-                    setTimeout(() => {
-                        const confetti = document.createElement('div');
-                        confetti.className = 'confetti';
-                        confetti.style.left = Math.random() * 100 + 'vw';
-                        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                        confetti.style.width = Math.random() * 10 + 5 + 'px';
-                        confetti.style.height = Math.random() * 10 + 5 + 'px';
-                        document.body.appendChild(confetti);
-
-                        setTimeout(() => {
-                            confetti.remove();
-                        }, 5000);
-                    }, i * 20);
-                }
-            }
         }
     </script>
 </body>
