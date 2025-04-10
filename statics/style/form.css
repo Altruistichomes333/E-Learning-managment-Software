@@ -1,22 +1,17 @@
 
 
 .container-form{
-
-    
     padding-top: 100px;
-  
 }
 
 
 .h1{
-
     font-weight: bolder;
     font-size: 30px;
     color: rgb(255, 217, 0);
 }
 
 .mycol{
-
     font-size: 20px;
     text-align: center;
     padding: 0px 40px
@@ -24,16 +19,13 @@
 
 
 .mycol ul li{
-
     list-style-type: none;
 }
 
 .mycol p{
-
     text-transform:capitalize;
     text-align: center;
     font-size: 18px;
-    
 }
 
 
@@ -51,42 +43,33 @@
 
 .inerst h4{
     font-size: 26px;
-
-
-
 }
 
 
 .container-fluid{
-
-    background-image: url(../image/2.jpg);
+    background-image: url(../image/pexels-danny-meneses-340146-943096.jpg);
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-   
 }
 
 
 
 label{
-
     font-size: 18px;
     text-transform: uppercase;
     font-weight: bold;
-
 }
 
 
 
 .inerst strong small{
-
-font-size: 20px;
-padding: -20px;
+    font-size: 20px;
+    padding: -20px;
 }
 
 ul li{
-
     display: inline-block;
     padding-left: 10px;
     font-size: 15px;
@@ -94,8 +77,7 @@ ul li{
 
 
 .form-col{
-
-    background-color: #712cf9;
+    /* background-color: #712cf9; */
     color: rgb(0, 0, 0);
     
 }
@@ -114,7 +96,6 @@ and (max-width:1024px) {
 
 
 .card  {
-
     background-color: #702cf932;
 }
 
@@ -122,26 +103,13 @@ and (max-width:1024px) {
 
 @media (max-width: 480px){
    
-
-
 }
 
 
 @media (max-width: 900px){
-
     .container-fluid{
-        height: 220vh ;
-
-
-      
+        height: 220vh ; 
     }
-
-
-    
-
-
-
-
 }
 
 

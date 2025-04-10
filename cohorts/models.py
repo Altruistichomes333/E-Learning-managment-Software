@@ -2,10 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-status = (
-    ('coming soon', 'coming soon'),
-    ('live', 'live')
-)
+
 
 class Trainingsession(models.Model):
     name = models.CharField(max_length=200)
@@ -14,6 +11,11 @@ class Trainingsession(models.Model):
         return self.name
 
 class Livesesion(models.Model):
+    status = (
+    ('coming soon', 'coming soon'),
+    ('live', 'live')
+    )
+    
     title = models.CharField(max_length=200, blank=True)
     subject = models.CharField(max_length=200, blank=True)
     link    = models.URLField(max_length=300)

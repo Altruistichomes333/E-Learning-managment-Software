@@ -19,125 +19,182 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.paginator import Paginator
 
 
-
-
-
-
 # studentcode = None
 # cohorts = None
 # Create your views here.
 
 
-class Dashboard(LoginRequiredMixin, View):
-    login_url ='login'
-    
-    def get(self, request):
-        myscore = Assigment.score_caculations(request.user)
-        # user = request.user
-        # pdb.set_trace()
 
+class Dashboard(LoginRequiredMixin, View):
+    login_url = 'login'
+
+    def get(self, request):
+        user = request.user
+
+        # Fetch Profile only once
         try:
-            assign = Assigment.objects.get(user=request.user)
-            if assign.score_project < 15:
-                return  redirect('reating')
-        except: assign = None
-            
-            
-        
-        adimitted_student = Profiles.objects.filter(status='admitted')
+            myprofile = Profiles.objects.get(user=user)
+        except Profiles.DoesNotExist:
+            return redirect('profile')
+
+        # Check if Assignment exists and handle redirection
+        assign = Assigment.objects.filter(user=user).first()
+        if assign and assign.score_project < 15:
+            return redirect('reating')
+
+        # Cohorts handling
+        myid = cohorts = None
         try:
-            profile = Profiles.objects.get(user=request.user).first_name
-        except ObjectDoesNotExist:
-            return  redirect('profile')
-  
-            # task_collection =  Task_collections.objects.get(student=request.user)
-           
-        # except 
-        #     return redirect('task_collwction')
-        
-        try:
-            cohorts = Cohorts.objects.get(users=request.user).name
-        except: cohorts = None
-        
-        try:
-            myid = Cohorts.objects.get(users=request.user)
-        except: myid = None
-        try:
-           myprofile = Profiles.objects.get(user=request.user)
-        except: myprofile = None
-        task_collection =  Task_collections.objects.filter(student=request.user)[:4]
-        
-        # if  not task_collection and task_collection.count() != 4:
-        #     return redirect('task_collwction')
-        
+            myid = Cohorts.objects.get(users=user)
+            cohorts = myid.name
+        except Cohorts.DoesNotExist:
+            pass  # If not found, myid and cohorts remain None
+
+        # Fetching student's task collection (max 4)
+        task_collection = Task_collections.objects.filter(student=user)[:4]
         if task_collection.count() != 4:
             return redirect('task_collwction')
+
+        # Fetch Assignment, Project, and Passcode
+        assigment = Payment.objects.filter(user=user).first()
+        project = Project.objects.filter(cohorts__users=user).distinct()
+        # project = Project.objects.filter(user=user).first()
+        studentcode = Mypasscode.objects.filter(student=user).values_list("passcodeNo", flat=True).first()
+
+        # Admitted Students & Pagination
+        admitted_students = Profiles.objects.filter(status='admitted')
+        paginator = Paginator(admitted_students, 4)  # Show 4 per page
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        # Redirect if payment status is rejected
+        if assigment and assigment.payment_status == 'reject':
+            return redirect('team')
+
+        # Context Data
+        context = {
+            'project': project,
+            'cohorts': cohorts,
+            'profile': myprofile,
+            'passcode': studentcode,
+            'myid': myid,
+            'adimitted_student': admitted_students,
+            'assigment': assigment,
+            'myscore': Assigment.score_caculations(user),
+            'admitted': admitted_students,
+            'task': task_collection,
+            'page_obj': page_obj,
+        }
+
+        messages.success(request, "Login successful, welcome!")
+        return render(request, 'dashboard/dash.html', context)
+
+    def post(self, request):
+        return render(request, 'dashboard/dash.html')
+
+
+
+# Old dashboard code
+# class Dashboard(LoginRequiredMixin, View):
+#     login_url ='login'
+    
+#     def get(self, request):
+#         myscore = Assigment.score_caculations(request.user)
+#         # user = request.user
+#         # pdb.set_trace()
+
+#         try:
+#             assign = Assigment.objects.get(user=request.user)
+#             if assign.score_project < 15:
+#                 return  redirect('reating')
+#         except: assign = None
+            
+            
+        
+#         adimitted_student = Profiles.objects.filter(status='admitted')
+#         try:
+#             profile = Profiles.objects.get(user=request.user).first_name
+#         except ObjectDoesNotExist:
+#             return  redirect('profile')
+  
+#             # task_collection =  Task_collections.objects.get(student=request.user)
+           
+#         # except 
+#         #     return redirect('task_collwction')
+        
+#         try:
+#             cohorts = Cohorts.objects.get(users=request.user).name
+#         except: cohorts = None
+        
+#         try:
+#             myid = Cohorts.objects.get(users=request.user)
+#         except: myid = None
+#         try:
+#            myprofile = Profiles.objects.get(user=request.user)
+#         except: myprofile = None
+#         task_collection =  Task_collections.objects.filter(student=request.user)[:4]
+        
+#         # if  not task_collection and task_collection.count() != 4:
+#         #     return redirect('task_collwction')
+        
+#         if task_collection.count() != 4:
+#             return redirect('task_collwction')
         
    
         
         
-        try:
-          assigment = Payment.objects.get(user=request.user)
-        except: assigment = None
+#         try:
+#           assigment = Payment.objects.get(user=request.user)
+#         except: assigment = None
         
         
-        try:
-          project = Project.objects.get(user=request.user)
-        except: project = None
+#         try:
+#           project = Project.objects.get(user=request.user)
+#         except: project = None
         
         
-        try:
-           studentcode = Mypasscode.objects.get(student=request.user).passcodeNo
-        except: studentcode = None
+#         try:
+#            studentcode = Mypasscode.objects.get(student=request.user).passcodeNo
+#         except: studentcode = None
         
         
-        try:
-           admitted = Profiles.objects.filter(status='admitted')
-        except: admitted = None
-        paginator = Paginator(admitted, 1) #showing just 4 page
-        page_number = request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
+#         try:
+#            admitted = Profiles.objects.filter(status='admitted')
+#         except: admitted = None
+#         paginator = Paginator(admitted, 1) #showing just 4 page
+#         page_number = request.GET.get("page")
+#         page_obj = paginator.get_page(page_number)
         
-        admitted2 = Profiles.objects.filter(status='admitted')
+#         admitted2 = Profiles.objects.filter(status='admitted')
         
-        try:
-            if assigment.payment_status == 'reject':
-                return redirect('team')
-        except: admitted2 = None
-            
-        
-    
-        
-        
-       
-    
-       
-    
-        
-        
-        context = {
-            'project':project,
-            'cohorts':cohorts, 
-            'profile':myprofile, 
-            'passcode':studentcode,
-            'myid':myid,
-            'adimitted_student':adimitted_student, 
-            'assigment':assigment,
-            'myscore': myscore,
-            'admitted':admitted,
-            'task': task_collection,
-            'page_obj':page_obj ,
+#         try:
+#             if assigment.payment_status == 'reject':
+#                 return redirect('team')
+#         except: admitted2 = None
+             
+#         context = {
+#             'project':project,
+#             'cohorts':cohorts, 
+#             'profile':myprofile, 
+#             'passcode':studentcode,
+#             'myid':myid,
+#             'adimitted_student':adimitted_student, 
+#             'assigment':assigment,
+#             'myscore': myscore,
+#             'admitted':admitted,
+#             'task': task_collection,
+#             'page_obj':page_obj ,
             
            
             
             
             
-        }
-        messages.success(request, "Login sucessfully, welcome")
-        return render(request, 'dashboard/dash.html', context=context)
+#         }
+#         messages.success(request, "Login sucessfully, welcome")
+#         return render(request, 'dashboard/dash.html', context=context)
     
-    def post(self, request):
-        return render(request, 'dashboard/dash.html')
+#     def post(self, request):
+#         return render(request, 'dashboard/dash.html')
     
     
     

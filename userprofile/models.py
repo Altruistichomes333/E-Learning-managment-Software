@@ -6,12 +6,7 @@ from dash.models import Cohorts
 User =  get_user_model()
 
 
-adminsion_status = (
-    ('pending', 'pending'),
-    ('rejected', 'rejected'),
-    ('admitted', 'admitted')
-    
-)
+
 
 
 
@@ -25,6 +20,12 @@ class Social(models.Model):
 
 
 class Profiles(models.Model):
+    adminsion_status = (
+    ('pending', 'pending'),
+    ('rejected', 'rejected'),
+    ('admitted', 'admitted')
+    )
+    
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     state =    models.CharField(max_length=200)

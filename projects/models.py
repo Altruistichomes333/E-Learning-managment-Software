@@ -4,25 +4,18 @@ from dash.models import Payment, Cohorts
 from django.contrib.auth import get_user_model
 
 
-# Create your models here.
-# title
-# start date 
-# endate 
-# header
-# description
-# courses
-
 User = get_user_model()
 
-mystatus = (
-    ('expired', 'expired'),
-     ('active', 'active'),
-      ('pending', 'pending')
-)
 
 
 
 class Project(models.Model):
+    mystatus = (
+        ('expired', 'expired'),
+        ('active', 'active'),
+        ('pending', 'pending')
+    )
+    
     project_name = models.CharField(max_length=200)
     ending_date = models.DateField(auto_created=True,blank=True, null=True)
     start_date = models.DateField(auto_created=True,blank=True, null=True)
@@ -36,14 +29,15 @@ class Project(models.Model):
     
     
 
-assigment = (
-    ('reviewing', 'reviewing'),
-     ('complete', 'complete'),
-     ('reject', 'reject')
-)
 
 
 class Assigment(models.Model):
+    assigment = (
+        ('reviewing', 'reviewing'),
+        ('complete', 'complete'),
+        ('reject', 'reject')
+    )
+    
     git_hub = models.CharField(max_length=100)
     user =   models.ForeignKey(User, on_delete=models.CASCADE)
     project  = models.CharField(max_length=10000)
@@ -76,15 +70,16 @@ class Assigment(models.Model):
 #         scores = Score.objects.filter(student=student)
 #         total_scores  = sum(myscore.score for myscore in scores )
 #         return total_scores
-task_satus = (
-    ('pending', 'pending'),
-     ('complete', 'complete')
-)
 
 class Task(models.Model):
+    task_status = (
+        ('pending', 'pending'),
+        ('complete', 'complete')
+    )
+    
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     task   = models.CharField(max_length=200)
-    status  = models.CharField(choices=task_satus, max_length=200)
+    status  = models.CharField(choices=task_status, default='pending', max_length=200)
     task_img = models.ImageField(upload_to='taskimage')
     links =  models.URLField()
     task_description = RichTextUploadingField(blank=True)
@@ -92,20 +87,18 @@ class Task(models.Model):
     
     def __str__(self):
         return self.task
-    
-    
-    
-
-
- 
-
 
 
 
 class Task_collections(models.Model):
+    task_status = (
+        ('pending', 'pending'),
+        ('complete', 'complete')
+    )
+    
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     task   = models.CharField(max_length=500)
-    status  = models.CharField(choices=task_satus, max_length=200)
+    status  = models.CharField(choices=task_status, max_length=200)
     screen_short= models.ImageField(upload_to='taskimage', ) 
     links =   models.URLField(blank=True)
     # links2  =  models.URLField(blank=True)
@@ -113,12 +106,3 @@ class Task_collections(models.Model):
     
     def __str__(self):
         return str(self.task)
-
-
-
-    
-    
-    
-    
-    
-    
