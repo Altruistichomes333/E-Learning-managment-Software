@@ -251,7 +251,7 @@
                     <div class="col-lg-8">
                         <div class="card p-4 animate__animated animate__fadeInUp">
                             <div class="card-body">
-                                {% include 'dashboard/mymessage.html' %}
+                                {% comment %} {% include 'dashboard/mymessage.html' %} {% endcomment %}
                                 <form id="taskForm" method="POST" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <div class="mb-4">

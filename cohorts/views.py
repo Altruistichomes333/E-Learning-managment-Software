@@ -160,31 +160,33 @@ class Tasks(LoginRequiredMixin,View):
     login_url = 'login'
     def get(self,request):
         task =  Task.objects.filter(status='pending')
-        return render(request, 'dashboard/task.html',{'allcohorts':task })
+        return render(request, 'dashboard/newtask.html',{'allcohorts':task })
         
     def post(self,request):
-        return render(request, 'dashboard/task.html')
+        return render(request, 'dashboard/newtask.html')
 
 
 class Taskscollection(LoginRequiredMixin,View):
     login_url = 'login'
     
     def get(self,request):
+        total_task = Task.objects.all().count()
         task_collection =  Task_collections.objects.filter(student=request.user)[:4]
         task =  Task.objects.filter(status='pending', student=request.user)
+        approved_task_count = Task_collections.objects.filter(status='approved', student=request.user).count()
         completed_task_count = Task_collections.objects.filter(status='complete', student=request.user).count()
         
         
         context = {
-            
+            'total_task': total_task,
             'task': task,
             'task_collection':task_collection,
-            'completed_task_count':completed_task_count
-            
+            'completed_task_count':completed_task_count,
+            'approved_task_count':approved_task_count
         }
         
         print(completed_task_count)
-        return render(request, 'dashboard/task_collection.html', context=context)
+        return render(request, 'dashboard/newtask.html', context=context)
     
     from django.http import JsonResponse
 
@@ -195,7 +197,11 @@ class Taskscollection(LoginRequiredMixin,View):
             link = request.POST['url']
             screen_short = request.FILES.get('myfiles')
             
-            create_task = Task_collections.objects.create(
+            submitted_task = Task_collections.objects.filter(task=task_collection, student=request.user).exists()
+            if submitted_task:
+                return JsonResponse({'success': False, 'error': 'Task already submitted.'})
+            else:
+                 create_task = Task_collections.objects.create(
                 task=task_collection,
                 links=link,
                 screen_short=screen_short,

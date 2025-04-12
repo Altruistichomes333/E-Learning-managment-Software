@@ -97,7 +97,7 @@ class Task_collections(models.Model):
     )
     
     student = models.ForeignKey(User, on_delete=models.CASCADE)
-    task   = models.CharField(max_length=500)
+    task   = models.CharField(max_length=500, unique=True)
     status  = models.CharField(choices=task_status, max_length=200)
     screen_short= models.ImageField(upload_to='taskimage', ) 
     links =   models.URLField(blank=True)
