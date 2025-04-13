@@ -173,19 +173,20 @@ class Taskscollection(LoginRequiredMixin,View):
         total_task = Task.objects.all().count()
         task_collection =  Task_collections.objects.filter(student=request.user)[:4]
         task =  Task.objects.filter(status='pending', student=request.user)
-        approved_task_count = Task_collections.objects.filter(status='approved', student=request.user).count()
-        completed_task_count = Task_collections.objects.filter(status='complete', student=request.user).count()
+        all_pending_task =  task =  Task.objects.filter(status='pending')
+        approved_task_count = Task_collections.objects.filter(status='complete', student=request.user).count()
+        #completed_task_count = Task_collections.objects.filter(status='complete', student=request.user).count()
         
         
         context = {
             'total_task': total_task,
             'task': task,
             'task_collection':task_collection,
-            'completed_task_count':completed_task_count,
-            'approved_task_count':approved_task_count
+            #'completed_task_count':completed_task_count,
+            'approved_task_count':approved_task_count,
+            'allcohorts':all_pending_task,
         }
         
-        print(completed_task_count)
         return render(request, 'dashboard/newtask.html', context=context)
     
     from django.http import JsonResponse
