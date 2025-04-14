@@ -175,14 +175,12 @@ class Taskscollection(LoginRequiredMixin,View):
         task =  Task.objects.filter(status='pending', student=request.user)
         all_pending_task =  task =  Task.objects.filter(status='pending')
         approved_task_count = Task_collections.objects.filter(status='complete', student=request.user).count()
-        #completed_task_count = Task_collections.objects.filter(status='complete', student=request.user).count()
         
         
         context = {
             'total_task': total_task,
             'task': task,
             'task_collection':task_collection,
-            #'completed_task_count':completed_task_count,
             'approved_task_count':approved_task_count,
             'allcohorts':all_pending_task,
         }
@@ -191,28 +189,55 @@ class Taskscollection(LoginRequiredMixin,View):
     
     from django.http import JsonResponse
 
-        
-    def post(self,request):
+    def post(self, request):
         try:
             task_collection = request.POST['project']
             link = request.POST['url']
             screen_short = request.FILES.get('myfiles')
-            
-            submitted_task = Task_collections.objects.filter(task=task_collection, student=request.user).exists()
+
+            # Check if the task has already been submitted by this user
+            submitted_task = Task_collections.objects.filter(
+                task=task_collection, 
+                student=request.user
+            ).exists()
+
             if submitted_task:
-                return JsonResponse({'success': False, 'error': 'Task already submitted.'})
-            else:
-                 create_task = Task_collections.objects.create(
+                return JsonResponse({'success': False, 'error': 'You have already submitted this task.'}, status=400)
+
+            # Create the task if not already submitted
+            Task_collections.objects.create(
                 task=task_collection,
                 links=link,
                 screen_short=screen_short,
                 student=request.user,
                 status='pending'
             )
-            
+
             return JsonResponse({'success': True})
+
         except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)})
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)  
+    # def post(self,request):
+    #     try:
+    #         task_collection = request.POST['project']
+    #         link = request.POST['url']
+    #         screen_short = request.FILES.get('myfiles')
+            
+    #         submitted_task = Task_collections.objects.filter(task=task_collection, student=request.user).exists()
+    #         if submitted_task:
+    #             return JsonResponse({'success': False, 'error': 'Task already submitted.'})
+    #         else:
+    #             create_task = Task_collections.objects.create(
+    #             task=task_collection,
+    #             links=link,
+    #             screen_short=screen_short,
+    #             student=request.user,
+    #             status='pending'
+    #         )
+            
+    #         return JsonResponse({'success': True})
+    #     except Exception as e:
+    #         return JsonResponse({'success': False, 'error': str(e)})
         
         # return render(request, 'dashboard/task_collection.html')
 
