@@ -217,29 +217,7 @@ class Taskscollection(LoginRequiredMixin,View):
 
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)}, status=500)  
-    # def post(self,request):
-    #     try:
-    #         task_collection = request.POST['project']
-    #         link = request.POST['url']
-    #         screen_short = request.FILES.get('myfiles')
-            
-    #         submitted_task = Task_collections.objects.filter(task=task_collection, student=request.user).exists()
-    #         if submitted_task:
-    #             return JsonResponse({'success': False, 'error': 'Task already submitted.'})
-    #         else:
-    #             create_task = Task_collections.objects.create(
-    #             task=task_collection,
-    #             links=link,
-    #             screen_short=screen_short,
-    #             student=request.user,
-    #             status='pending'
-    #         )
-            
-    #         return JsonResponse({'success': True})
-    #     except Exception as e:
-    #         return JsonResponse({'success': False, 'error': str(e)})
-        
-        # return render(request, 'dashboard/task_collection.html')
+
 
 class Ourcommunity(LoginRequiredMixin,View):
     login_url = 'login'
